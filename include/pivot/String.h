@@ -5,8 +5,17 @@ namespace Pivot {
 
 class String {
 public:
+  virtual ~String();
+
   String();
   String(const char*);
+
+  size_t length();
+
+private:
+  size_t mLength;
+  char* mData;
+
 };
 
 } // namespace Pivot

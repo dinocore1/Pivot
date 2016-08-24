@@ -1,22 +1,12 @@
 cmake_minimum_required (VERSION 2.8.11)
 project (Pivot)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+enable_testing ()
 
-file(
-    GLOB_RECURSE
-    SRC_FILES
-    src/*.cpp
-)
+add_subdirectory(src)
+add_subdirectory(include)
+add_subdirectory(test)
 
-file(
-    GLOB_RECURSE
-    INCLUDE_FILES
-    include/*.h
-)
-
-add_library (Pivot ${SRC_FILES})
-target_include_directories (Pivot PUBLIC ${INCLUDE_FILES})
 
 
 if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
