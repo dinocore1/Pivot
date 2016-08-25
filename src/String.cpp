@@ -1,5 +1,6 @@
 
 #include "config.h"
+#include <pivot/Pivot.h>
 
 #include <pivot/String.h>
 

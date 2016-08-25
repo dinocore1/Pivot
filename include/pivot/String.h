@@ -11,6 +11,9 @@ public:
   String(const char*);
 
   size_t length();
+  operator const char* () const {
+    return mData;
+  }
 
 private:
   size_t mLength;
