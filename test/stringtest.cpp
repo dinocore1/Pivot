@@ -1,9 +1,6 @@
 
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 
-#include "pivot/String.h"
+#include <pivot/Pivot.h>
 
 using namespace Pivot;
 
