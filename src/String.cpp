@@ -17,6 +17,19 @@ String::String()
 
 }
 
+String::String(const String& copy)
+ : mLength(copy.mLength) {
+   mData = new char[mLength];
+   memcpy(mData, copy.mData, mLength);
+}
+
+#if (__cpluplus >= 201103L)
+String::String(String&& copy)
+ : mLength(copy.mLength), mData(copy.mData) {
+   copy.mData = NULL;
+}
+#endif
+
 String::String(const char* str) {
    mLength = strlen(str);
    mData = new char[mLength];

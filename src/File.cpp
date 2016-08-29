@@ -27,6 +27,7 @@ bool File::exists() const {
   return access(mFilePath, F_OK) == 0;
   #endif
 
+  return false;
 }
 
 } // namespace Pivot
