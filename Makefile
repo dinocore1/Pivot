@@ -29,3 +29,9 @@ ifeq ($(findstring distclean,$(MAKECMDGOALS)),)
 	$(MAKECMDGOALS): ./build/Makefile
 	@ $(MAKE) -C build $(MAKECMDGOALS)
 endif
+
+.PHONY: codeblocks
+
+codeblocks:
+	$(MKDIR) codeblocks
+	cd codeblocks && cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' ..

@@ -9,15 +9,17 @@ public:
 
   String();
   String(const String&);
-#if (__cpluplus >= 201103L)
-  String(String&&);
-#endif
   String(const char*);
 
-  size_t length();
-  operator const char* () const {
-    return mData;
-  }
+  size_t length() const;
+  operator const char* () const;
+  String operator+(const String&);
+
+#if (__cpluplus >= 201103L)
+  String(String&&);
+  String& operator=(String&&);
+#endif
+
 
 private:
   size_t mLength;
