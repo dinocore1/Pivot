@@ -3,21 +3,21 @@
 
 namespace Pivot {
 
-class String {
+class String8 {
 public:
-  virtual ~String();
+  virtual ~String8();
 
-  String();
-  String(const String&);
-  String(const char*);
+  String8();
+  String8(const String8&);
+  String8(const char*);
 
   size_t length() const;
   operator const char* () const;
-  String operator+(const String&);
+  String8 operator+(const String8&);
 
 #if (__cpluplus >= 201103L)
-  String(String&&);
-  String& operator=(String&&);
+  String8(String&&);
+  String8& operator=(String8&&);
 #endif
 
 

@@ -4,16 +4,16 @@
 
 using namespace Pivot;
 
-String createString() {
-    return String("hello world");
+String8 createString() {
+    return String8("hello world");
 }
 
 int main() {
-  String str2;
+  String8 str2;
   str2 = createString();
   printf("done %s\n", (const char*)str2);
 
-  String str3 = String("this ") + "is cool";
+  String8 str3 = String8("this ") + "is cool";
   printf("str3: %s\n", (const char*)str3);
 
   return 0;

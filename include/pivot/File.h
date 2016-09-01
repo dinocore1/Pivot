@@ -7,13 +7,13 @@ class File {
 public:
   File();
   virtual ~File();
-  File(const String& filePath);
+  File(const String8& filePath);
 
   bool exists() const;
   bool isDir() const;
 
 private:
-  String mFilePath;
+  String8 mFilePath;
 
 };
 

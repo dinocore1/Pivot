@@ -3,7 +3,7 @@ configure_file(config.h.in config.h)
 
 set(Pivot_SRC_FILES
   "config.h.in"
-  "String.cpp"
+  "String8.cpp"
   "File.cpp"
 )
 

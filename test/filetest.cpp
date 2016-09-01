@@ -5,7 +5,7 @@ using namespace Pivot;
 
 int main() {
 
-  String s("testfile.txt");
+  String8 s("testfile.txt");
   File f(s);
   if(f.exists()) {
     printf("it exists\n");

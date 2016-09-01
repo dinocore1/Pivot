@@ -8,6 +8,6 @@
 
 #include <pivot/Types.h>
 #include <pivot/Slice.h>
-#include <pivot/String.h>
+#include <pivot/String8.h>
 
 #endif // PIVOT_PIVOT_H

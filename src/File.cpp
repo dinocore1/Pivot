@@ -17,7 +17,7 @@ File::~File() {
 
 }
 
-File::File(const String& filePath)
+File::File(const String8& filePath)
  : mFilePath(filePath) {
 
  }
