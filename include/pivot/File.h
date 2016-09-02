@@ -11,6 +11,7 @@ public:
 
   bool exists() const;
   bool isDir() const;
+  String8 getAbsolutePath() const;
 
 private:
   String8 mFilePath;

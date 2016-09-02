@@ -4,6 +4,10 @@
 
 #include <pivot/String8.h>
 
+#include <stdio.h>
+#include <string.h>
+
+
 namespace Pivot {
 
 String8::~String8() {

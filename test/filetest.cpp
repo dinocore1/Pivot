@@ -11,6 +11,8 @@ int main() {
     printf("it exists\n");
   }
 
+  FileOutputStream fout(f);
+
 
   return 0;
 }

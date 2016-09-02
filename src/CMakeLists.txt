@@ -5,6 +5,7 @@ set(Pivot_SRC_FILES
   "config.h.in"
   "String8.cpp"
   "File.cpp"
+  "FileOutputStream.cpp"
 )
 
 include_directories(../include ${CMAKE_CURRENT_BINARY_DIR})
