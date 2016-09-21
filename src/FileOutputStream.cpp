@@ -40,7 +40,7 @@ void FileOutputStream::write(const byte* buf, size_t offset, size_t len) {
   Unix_Impl* data = (Unix_Impl*)mImpl;
   size_t bytesWritten = 0;
   while(bytesWritten < len) {
-    ssize_t i = write(data->mHandle, (void*)&buf[offset + bytesWritten], len - bytesWritten);
+    ssize_t i = ::write(data->mHandle, &buf[offset + bytesWritten], len - bytesWritten);
     if(i > 0) {
       bytesWritten += i;
     } else {

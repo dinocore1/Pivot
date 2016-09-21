@@ -4,8 +4,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <cstdlib>
+
+#if defined(OS_TYPE_UNIX)
+#include <sys/types.h>
+#endif
+
 #include <pivot/Types.h>
 #include <pivot/Slice.h>
+#include <pivot/SharedBuffer.h>
 #include <pivot/String8.h>
 
 // IO Stuff

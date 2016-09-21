@@ -1,5 +1,6 @@
 #include <pivot/Pivot.h>
 #include <pivot/File.h>
+#include <cstdio>
 
 using namespace Pivot;
 
