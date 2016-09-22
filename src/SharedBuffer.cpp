@@ -15,21 +15,13 @@ SharedBuffer* SharedBuffer::alloc(size_t size) {
   return retval;
 }
 
-ssize_t SharedBuffer::dealloc(const SharedBuffer* released) {
-  if(released->mRefs != 0) {
-    return -1;
-  }
-  free(const_cast<SharedBuffer*>(released));
-  return 0;
-}
-
 void SharedBuffer::retain() const {
   pivot_atomic_inc(&mRefs);
 }
 
 int32_t SharedBuffer::release(uint32_t flags) const {
-  int32_t prev = 1;
-  if (isOnlyOwner() || ((prev = pivot_atomic_dec(&mRefs)) == 1)) {
+  int32_t prev;
+  if (((prev = pivot_atomic_dec(&mRefs)) == 1)) {
     mRefs = 0;
     if ((flags & KeepStorage) == 0) {
       free(const_cast<SharedBuffer*>(this));

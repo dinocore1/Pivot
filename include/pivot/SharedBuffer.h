@@ -11,7 +11,6 @@ public:
   };
 
   static SharedBuffer* alloc(size_t size);
-  static ssize_t dealloc(const SharedBuffer* released);
 
   static inline SharedBuffer* bufferFromData(void* data);
   static inline const SharedBuffer* bufferFromData(const void* data);

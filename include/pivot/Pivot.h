@@ -11,6 +11,7 @@
 #endif
 
 #include <pivot/Types.h>
+#include <pivot/Atomic.h>
 #include <pivot/Slice.h>
 #include <pivot/SharedBuffer.h>
 #include <pivot/String8.h>
