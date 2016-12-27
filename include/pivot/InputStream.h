@@ -1,7 +1,7 @@
 #ifndef PIVOT_INPUTSTREAM_H
 #define PIVOT_INPUTSTREAM_H
 
-namespace Pivot {
+namespace pivot {
 
 class InputStream {
 public:
@@ -9,6 +9,6 @@ public:
   virtual int read(byte* buf, size_t offset, size_t len) = 0;
 };
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_INPUTSTREAM_H

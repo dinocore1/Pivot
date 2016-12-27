@@ -1,7 +1,7 @@
 #ifndef PIVOT_STRING_H
 #define PIVOT_STRING_H
 
-namespace Pivot {
+namespace pivot {
 
 class String8 {
 public:
@@ -27,6 +27,6 @@ private:
 
 };
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_STRING_H

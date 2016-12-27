@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #endif
 
-namespace Pivot {
+namespace pivot {
 
 #if defined(OS_TYPE_UNIX)
 struct Unix_Impl {
@@ -52,4 +52,4 @@ void FileOutputStream::write(const byte* buf, size_t offset, size_t len) {
 
 }
 
-} // namespace Pivot
+} // namespace pivot

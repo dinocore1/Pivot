@@ -8,7 +8,7 @@
 #include <string.h>
 
 
-namespace Pivot {
+namespace pivot {
 
 String8::~String8() {
   if(mData != NULL) {
@@ -76,4 +76,4 @@ String8& String8::operator=(String8&& other) {
 
 #endif // (__cpluplus >= 201103L)
 
-} // namespace Pivot
+} // namespace pivot

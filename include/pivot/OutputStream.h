@@ -1,7 +1,7 @@
 #ifndef PIVOT_OUTPUTSTREAM_H
 #define PIVOT_OUTPUTSTREAM_H
 
-namespace Pivot {
+namespace pivot {
 
 class OutputStream {
 public:
@@ -9,6 +9,6 @@ public:
   virtual void write(const byte* buf, size_t offset, size_t len) = 0;
 };
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_OUTPUTSTREAM_H

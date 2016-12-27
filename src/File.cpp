@@ -7,7 +7,7 @@
 #include <unistd.h>
 #endif
 
-namespace Pivot {
+namespace pivot {
 
 File::File() {
 
@@ -30,4 +30,4 @@ bool File::exists() const {
   return false;
 }
 
-} // namespace Pivot
+} // namespace pivot

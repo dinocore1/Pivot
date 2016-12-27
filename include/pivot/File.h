@@ -1,7 +1,7 @@
 #ifndef PIVOT_FILE_H
 #define PIVOT_FILE_H
 
-namespace Pivot {
+namespace pivot {
 
 class File {
 public:
@@ -18,6 +18,6 @@ private:
 
 };
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_FILE_H

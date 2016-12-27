@@ -1,7 +1,7 @@
 #ifndef PIVOT_SLICE_H
 #define PIVOT_SLICE_H
 
-namespace Pivot {
+namespace pivot {
 
 template <typename T>
 class Slice {
@@ -35,6 +35,6 @@ private:
 
 
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_SLICE_H

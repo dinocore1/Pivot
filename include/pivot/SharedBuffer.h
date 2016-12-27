@@ -1,7 +1,7 @@
 #ifndef PIVOT_SHAREDBUFFER_H
 #define PIVOT_SHAREDBUFFER_H
 
-namespace Pivot {
+namespace pivot {
 
 class SharedBuffer {
 public:
@@ -59,6 +59,6 @@ size_t SharedBuffer::sizeFromData(const void* data) {
 }
 
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_SHAREDBUFFER_H

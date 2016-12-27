@@ -1,7 +1,7 @@
 #include "config.h"
 #include <pivot/Pivot.h>
 
-namespace Pivot {
+namespace pivot {
 
 
 
@@ -17,4 +17,4 @@ VectorImpl::VectorImpl(const VectorImpl& rhs)
 }
 
 
-} // namespace Pivot
+} // namespace pivot

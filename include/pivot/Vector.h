@@ -1,7 +1,7 @@
 #ifndef PIVOT_VECTOR_H
 #define PIVOT_VECTOR_H
 
-namespace Pivot {
+namespace pivot {
 
 class VectorImpl {
 public:
@@ -57,7 +57,7 @@ private:
 
 };
 
-}
+} // namespace pivot
 
 
 #endif // PIVOT_VECTOR_H

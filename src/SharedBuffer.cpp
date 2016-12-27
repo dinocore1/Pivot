@@ -3,7 +3,7 @@
 
 #include <pivot/SharedBuffer.h>
 
-namespace Pivot {
+namespace pivot {
 
 SharedBuffer* SharedBuffer::alloc(size_t size) {
   SharedBuffer* retval = static_cast<SharedBuffer*>(malloc(sizeof(SharedBuffer) + size));
@@ -33,4 +33,4 @@ int32_t SharedBuffer::release(uint32_t flags) const {
 
 
 
-} // namespace Pivot
+} // namespace pivot

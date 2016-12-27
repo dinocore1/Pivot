@@ -1,7 +1,7 @@
 #ifndef PIVOT_FILEOUTPUTSTREAM_H
 #define PIVOT_FILEOUTPUTSTREAM_H
 
-namespace Pivot {
+namespace pivot {
 
 class FileOutputStream : public OutputStream {
 public:
@@ -17,6 +17,6 @@ private:
   void* mImpl;
 };
 
-} // namespace Pivot
+} // namespace pivot
 
 #endif // PIVOT_FILEOUTPUTSTREAM_H
