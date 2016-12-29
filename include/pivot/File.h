@@ -3,6 +3,11 @@
 
 namespace pivot {
 
+class Path {
+public:
+  
+};
+
 class File {
 public:
   File();

@@ -1,4 +1,3 @@
-#include "config.h"
 #include <pivot/Pivot.h>
 
 namespace pivot {

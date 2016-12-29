@@ -2,7 +2,7 @@
 #include <pivot/File.h>
 #include <cstdio>
 
-using namespace Pivot;
+using namespace pivot;
 
 int main() {
 

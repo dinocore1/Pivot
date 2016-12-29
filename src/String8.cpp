@@ -1,5 +1,3 @@
-
-#include "config.h"
 #include <pivot/Pivot.h>
 
 #include <pivot/String8.h>
@@ -11,8 +9,9 @@
 namespace pivot {
 
 String8::~String8() {
-  if(mData != NULL) {
+  if(mLength != 0) {
     delete[] mData;
+	mLength = 0;
   }
 }
 

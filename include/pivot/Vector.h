@@ -15,11 +15,11 @@ public:
   VectorImpl(const VectorImpl& rhs);
   virtual ~VectorImpl();
 
-  VectorImpl& operator = (const VectorImpl& rhs);
-  inline size_t size() const { return mCount };
-  inline bool isEmpty() const { return mCount == 0; };
+  VectorImpl& operator= (const VectorImpl&);
+  inline size_t size() const;
+  inline bool isEmpty() const;
   size_t capacity() const;
-  ssize_t insertAt(const void* item, size_t index);
+  void insertAt(const void* item, size_t index);
   void clear();
 
 private:
@@ -28,8 +28,15 @@ private:
   void* mStorage;
   size_t mCount;
 
-
 };
+
+inline size_t VectorImpl::size() const {
+	return mCount;
+}
+
+inline bool VectorImpl::isEmpty() const {
+	return mCount == 0;
+}
 
 template<class TYPE>
 class Vector : private VectorImpl {
@@ -51,7 +58,7 @@ public:
 
   const TYPE& operator[] (size_t index) const;
 
-  ssize_t insertAt(const TYPE& item, size_t index);
+  void insertAt(const TYPE& item, size_t index);
 
 private:
 

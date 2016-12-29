@@ -20,14 +20,14 @@ public:
   inline void* data();
 
   void retain() const;
-  int32_t release(uint32_t flags = 0) const;
+  void release(uint32_t flags = 0) const;
   inline bool isOnlyOwner() const;
 
 private:
   SharedBuffer();
   ~SharedBuffer();
   SharedBuffer(const SharedBuffer&);
-  SharedBuffer& operator = (const SharedBuffer&);
+  SharedBuffer& operator= (const SharedBuffer&);
 
   mutable int32_t mRefs;
   size_t mSize;

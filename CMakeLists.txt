@@ -8,13 +8,19 @@ option (BuildTests "Build unit tests" ON)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/src/config.h.in.cmake"
-  "${PROJECT_BINARY_DIR}/src/config.h"
+  "${PROJECT_BINARY_DIR}/include/pivot/config.h"
 )
 
 include_directories(include ${CMAKE_BINARY_DIR}/src)
 file(GLOB pivot_headers include/pivot/*.h)
 file(GLOB pivot_sources src/*.cpp)
-add_library(pivot "${PROJECT_BINARY_DIR}/src/config.h" ${pivot_headers} ${pivot_sources})
+
+if(WIN32)
+  file(GLOB windows_sources src/port/win32/*.cpp)
+  set(pivot_sources ${pivot_sources} ${windows_sources})
+endif()
+
+add_library(pivot "${PROJECT_BINARY_DIR}/include/pivot/config.h" ${pivot_headers} ${pivot_sources})
 
 # Define headers for this library. PUBLIC headers are used for
 # compiling the library, and will be added to consumers' build

@@ -1,8 +1,8 @@
-
-
 #include <pivot/Pivot.h>
 
-using namespace Pivot;
+#include <stdio.h>
+
+using namespace pivot;
 
 String8 createString() {
     return String8("hello world");

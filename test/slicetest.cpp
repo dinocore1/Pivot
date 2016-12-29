@@ -1,6 +1,8 @@
 #include <pivot/Pivot.h>
 
-using namespace Pivot;
+#include <stdio.h>
+
+using namespace pivot;
 
 int main() {
 
