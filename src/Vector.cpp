@@ -2,7 +2,9 @@
 
 namespace pivot {
 
+VectorImpl::~VectorImpl() {
 
+}
 
 VectorImpl::VectorImpl(size_t itemSize, uint32_t flags)
  : mFlags(flags), mItemSize(itemSize), mStorage(NULL), mCount(0) {}
