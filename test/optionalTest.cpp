@@ -1,17 +1,16 @@
 #include <pivot/Pivot.h>
 
 #include <cstdio>
-#include <utility>
 
 using namespace pivot;
 
 class Obj {
 
 public:
-	static Obj&& createWithNum(int num) {
+	static Obj createWithNum(int num) {
 		Obj retval;
 		retval.i = num;
-		return std::move(retval);
+		return retval;
 	}
 
 	~Obj() {

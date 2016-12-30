@@ -1,5 +1,8 @@
 #include <pivot/Pivot.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 namespace pivot {
 
 SharedBuffer* SharedBuffer::alloc(size_t size) {
