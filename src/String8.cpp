@@ -5,6 +5,11 @@
 
 #include <string.h>
 
+//For some reason Windows's linker excludes static variable symbols when statically linking libraries
+//objects. This is a weird workaround. See: http://stackoverflow.com/questions/599035/force-visual-studio-to-link-all-symbols-in-a-lib-file
+//another solution is to set 'Linker->General->Link Library Dependencies' and 'Linker->General->Use Library Dependency Inputs' set to 'Yes' for your main app
+FORCE_LINK_THAT(staticInit)
+
 namespace pivot {
 
 static SharedBuffer* gEmptyStringBuf = NULL;

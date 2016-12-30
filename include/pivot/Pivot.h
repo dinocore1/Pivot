@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#include <pivot/config.h>
 #include <pivot/Status.h>
 #include <pivot/Types.h>
 #include <pivot/Atomic.h>

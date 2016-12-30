@@ -11,7 +11,7 @@ configure_file (
   "${PROJECT_BINARY_DIR}/include/pivot/config.h"
 )
 
-include_directories(include ${CMAKE_BINARY_DIR}/src)
+include_directories(include ${CMAKE_BINARY_DIR}/include)
 file(GLOB pivot_headers include/pivot/*.h)
 file(GLOB pivot_sources src/*.cpp)
 
