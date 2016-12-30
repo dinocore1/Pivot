@@ -18,10 +18,17 @@ public:
 
   inline const void* data() const;
   inline void* data();
+  inline size_t size() const;
 
   void retain() const;
   void release(uint32_t flags = 0) const;
   inline bool isOnlyOwner() const;
+
+  // edit the buffer (get a writtable version of it)
+  SharedBuffer* edit() const;
+
+  // edit the buffer, resizing if needed
+  SharedBuffer* editResize(size_t size) const;
 
 private:
   SharedBuffer();
@@ -36,6 +43,10 @@ private:
 
 const void* SharedBuffer::data() const {
   return this + 1;
+}
+
+size_t SharedBuffer::size() const {
+	return mSize;
 }
 
 void* SharedBuffer::data() {
