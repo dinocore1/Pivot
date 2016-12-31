@@ -37,6 +37,8 @@ install (
   RUNTIME DESTINATION bin # this is for Windows
 )
 install (DIRECTORY include/ DESTINATION include)
+install (FILES ${PROJECT_BINARY_DIR}/include/pivot/config.h DESTINATION include/pivot)
+
 
 # This make the project importable from the install directory
 # put the config file in per-project dir (name MUST match), can also
