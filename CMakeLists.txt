@@ -5,6 +5,12 @@ set (Pivot_VERSION_MAJOR 1)
 set (Pivot_VERSION_MINOR 0)
 
 option (BuildTests "Build unit tests" ON)
+option (HaveFilesystem "Build filesystem utilility classes" ON)
+
+
+if(HaveFilesystem)
+  set(HAVE_FILESYSTEM true)
+endif()
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/src/config.h.in.cmake"

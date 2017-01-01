@@ -4,7 +4,7 @@
 #define Pivot_VERSION_MAJOR @Pivot_VERSION_MAJOR@
 #define Pivot_VERSION_MINOR @Pivot_VERSION_MINOR@
 
-
+#cmakedefine HAVE_FILESYSTEM 1
 
 ///////////////////////////////////////////
 

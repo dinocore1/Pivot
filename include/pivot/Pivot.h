@@ -13,6 +13,7 @@
 
 // Data structures
 #include <pivot/Slice.h>
+#include <pivot/VectorImpl.h>
 #include <pivot/Vector.h>
 
 
