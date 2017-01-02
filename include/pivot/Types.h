@@ -5,6 +5,8 @@ namespace pivot {
 
 typedef uint8_t byte;
 
+typedef int ssize_t;
+
 } // namespace pivot
 
 #endif // PIVOT_TYPES_H

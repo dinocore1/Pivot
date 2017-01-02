@@ -12,6 +12,7 @@ enum {
 	OK = 0,
 	UNKNOWN_ERROR = 0x80000000,
 	NO_MEMORY = -ENOMEM,
+  BAD_INDEX = -EACCES
 };
 
 } // namespace pivot

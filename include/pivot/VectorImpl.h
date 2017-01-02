@@ -19,7 +19,7 @@ public:
   inline size_t size() const;
   inline bool isEmpty() const;
   size_t capacity() const;
-  void insertAt(const void* item, size_t index);
+  ssize_t insertAt(const void* item, size_t index, size_t numItems);
   void clear();
 
 private:
@@ -28,13 +28,17 @@ private:
   void* mStorage;
   size_t mCount;
 
+  void* _grow(size_t where, size_t amount);
+
 };
 
-inline size_t VectorImpl::size() const {
+inline
+size_t VectorImpl::size() const {
 	return mCount;
 }
 
-inline bool VectorImpl::isEmpty() const {
+inline
+bool VectorImpl::isEmpty() const {
 	return mCount == 0;
 }
 
