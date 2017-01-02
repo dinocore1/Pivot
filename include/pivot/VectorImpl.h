@@ -6,7 +6,7 @@ namespace pivot {
 class VectorImpl {
 public:
   enum {
-    HAS_TRIVIAL_CTR     = 0x00000001,
+    HAS_TRIVIAL_CTOR     = 0x00000001,
     HAS_TRIVIAL_DTOR    = 0x00000002,
     HAS_TRIVIAL_COPY    = 0x00000004,
   };
