@@ -16,7 +16,7 @@ struct Unix_Impl {
 #endif
 
 FileOutputStream::FileOutputStream(const File& file)
- : mFile(file), mImpl(NULL) {
+  : mFile(file), mImpl(NULL) {
 
 #if defined(OS_TYPE_UNIX)
   Unix_Impl* data = new Unix_Impl();

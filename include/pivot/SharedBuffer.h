@@ -46,7 +46,7 @@ const void* SharedBuffer::data() const {
 }
 
 size_t SharedBuffer::size() const {
-	return mSize;
+  return mSize;
 }
 
 void* SharedBuffer::data() {

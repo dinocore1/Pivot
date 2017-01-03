@@ -17,14 +17,14 @@ File::~File() {
 }
 
 File::File(const String8& filePath)
- : mFilePath(filePath) {
+  : mFilePath(filePath) {
 
- }
+}
 
 bool File::exists() const {
-  #if defined(OS_TYPE_UNIX)
+#if defined(OS_TYPE_UNIX)
   return access(mFilePath, F_OK) == 0;
-  #endif
+#endif
 
   return false;
 }

@@ -24,7 +24,7 @@ public:
   const TYPE* array() const;
   TYPE* editArray();
 
-  const TYPE& operator[] (size_t index) const;
+  const TYPE& operator[](size_t index) const;
 
   inline ssize_t insertAt(const TYPE& item, size_t index, size_t numItems = 1);
 
@@ -34,11 +34,11 @@ private:
 
 template<class TYPE> inline
 Vector<TYPE>::Vector()
- : VectorImpl(sizeof(TYPE),
-    ( (traits<TYPE>::has_trivial_ctor   ? HAS_TRIVIAL_CTOR   : 0)
-     |(traits<TYPE>::has_trivial_dtor   ? HAS_TRIVIAL_DTOR   : 0)
-     |(traits<TYPE>::has_trivial_copy   ? HAS_TRIVIAL_COPY   : 0)
-    )) {
+  : VectorImpl(sizeof(TYPE),
+               ((traits<TYPE>::has_trivial_ctor   ? HAS_TRIVIAL_CTOR   : 0)
+                |(traits<TYPE>::has_trivial_dtor   ? HAS_TRIVIAL_DTOR   : 0)
+                |(traits<TYPE>::has_trivial_copy   ? HAS_TRIVIAL_COPY   : 0)
+               )) {
 }
 
 template<class TYPE> inline

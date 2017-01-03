@@ -6,6 +6,8 @@ SHELL := /bin/bash
 RM    := rm -rf
 MKDIR := mkdir -p
 
+.PHONY: clean format codeblocks
+
 all: ./build/Makefile
 	@ $(MAKE) -C build
 
@@ -30,7 +32,8 @@ ifeq ($(findstring distclean,$(MAKECMDGOALS)),)
 	@ $(MAKE) -C build $(MAKECMDGOALS)
 endif
 
-.PHONY: codeblocks
+format:
+	sh scripts/format.sh
 
 codeblocks:
 	$(MKDIR) codeblocks

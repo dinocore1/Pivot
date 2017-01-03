@@ -3,12 +3,24 @@
 
 namespace pivot {
 
-template <typename T> struct trait_trivial_ctor { enum { value = false }; };
-template <typename T> struct trait_trivial_dtor { enum { value = false }; };
-template <typename T> struct trait_trivial_copy { enum { value = false }; };
-template <typename T> struct trait_trivial_move { enum { value = false }; };
-template <typename T> struct trait_pointer      { enum { value = false }; };
-template <typename T> struct trait_pointer<T*>  { enum { value = true }; };
+template <typename T> struct trait_trivial_ctor {
+  enum { value = false };
+};
+template <typename T> struct trait_trivial_dtor {
+  enum { value = false };
+};
+template <typename T> struct trait_trivial_copy {
+  enum { value = false };
+};
+template <typename T> struct trait_trivial_move {
+  enum { value = false };
+};
+template <typename T> struct trait_pointer      {
+  enum { value = false };
+};
+template <typename T> struct trait_pointer<T*>  {
+  enum { value = true };
+};
 
 
 template <typename TYPE>

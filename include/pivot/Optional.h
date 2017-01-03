@@ -15,7 +15,7 @@ public:
   void clear();
   T& get();
   T& operator= (const T&);
-  operator T&();
+  operator T& ();
 
 private:
   bool mInitialized;
@@ -24,12 +24,12 @@ private:
 
 template<typename T>
 Optional<T>::Optional()
- : mInitialized(false) {
+  : mInitialized(false) {
 }
 
 template<typename T>
 Optional<T>::~Optional() {
-	clear();
+  clear();
 }
 
 template<typename T>
@@ -40,20 +40,20 @@ Optional<T>::Optional(const T& obj) {
 
 template<typename T>
 bool Optional<T>::isInitialized() const {
-	return mInitialized;
+  return mInitialized;
 }
 
 template<typename T>
 Optional<T>::operator bool() const {
-	return mInitialized;
+  return mInitialized;
 }
 
 template<typename T>
 void Optional<T>::clear() {
-	if (mInitialized) {
-		reinterpret_cast<T*>(mData)->~T();
-		mInitialized = false;
-	}
+  if(mInitialized) {
+    reinterpret_cast<T*>(mData)->~T();
+    mInitialized = false;
+  }
 }
 
 template<typename T>
@@ -63,15 +63,15 @@ T& Optional<T>::get() {
 
 template<typename T>
 T& Optional<T>::operator= (const T& obj) {
-	T& retval = *reinterpret_cast<T*>(mData);
-	retval = obj;
-	mInitialized = true;
-	return retval;
+  T& retval = *reinterpret_cast<T*>(mData);
+  retval = obj;
+  mInitialized = true;
+  return retval;
 }
 
 template<typename T>
-Optional<T>::operator T&() {
-	return *reinterpret_cast<T*>(mData);
+Optional<T>::operator T& () {
+  return *reinterpret_cast<T*>(mData);
 }
 
 } // namespace pivot

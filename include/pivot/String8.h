@@ -4,7 +4,7 @@
 namespace pivot {
 
 class String8 {
-public:  
+public:
   String8();
   String8(const String8&);
   String8(const char*);
@@ -22,7 +22,7 @@ public:
   inline String8& operator=(const String8&);
 
   inline const char* string() const;
-  inline operator const char*() const;
+  inline operator const char* () const;
 
 private:
   const char* mString;
@@ -32,35 +32,35 @@ private:
 };
 
 inline size_t String8::length() const {
-	return SharedBuffer::sizeFromData(mString) - 1;
+  return SharedBuffer::sizeFromData(mString) - 1;
 }
 
 inline size_t String8::bytes() const {
-	return SharedBuffer::sizeFromData(mString) - 1;
+  return SharedBuffer::sizeFromData(mString) - 1;
 }
 
 inline String8& String8::operator+=(const String8& o) {
-	append(o);
-	return *this;
+  append(o);
+  return *this;
 }
 
 inline String8 String8::operator+(const String8& o) const {
-	String8 tmp(*this);
-	tmp += o;
-	return tmp;
+  String8 tmp(*this);
+  tmp += o;
+  return tmp;
 }
 
 inline String8& String8::operator=(const String8& other) {
-	setTo(other);
-	return *this;
+  setTo(other);
+  return *this;
 }
 
 inline const char* String8::string() const {
-	return mString;
+  return mString;
 }
 
-inline String8::operator const char*() const {
-	return mString;
+inline String8::operator const char* () const {
+  return mString;
 }
 
 } // namespace pivot

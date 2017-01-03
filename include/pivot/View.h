@@ -16,10 +16,10 @@ template<class T>
 class vector_view : public range_view<std::vector<T>::iterator> {
 public:
   vector_view(const Derived& begin, const Derived& end)
-   : mBegin(begin), mEnd(end) {}
+    : mBegin(begin), mEnd(end) {}
 
   vector_view(std::vector<T>& v)
-   : mBegin(v.begin()), mEnd(v.end()) {}
+    : mBegin(v.begin()), mEnd(v.end()) {}
 
   Derived& begin() const {
     return mBegin;

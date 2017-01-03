@@ -24,19 +24,19 @@ inline int32_t pivot_atomic_dec(volatile int32_t* addr) {
 #include <Windows.h>
 
 inline int32_t pivot_atomic_inc(volatile int32_t* addr) {
-	return InterlockedIncrement((LONG volatile*)addr);
+  return InterlockedIncrement((LONG volatile*)addr);
 }
 
 inline int32_t pivot_atomic_dec(volatile int32_t* addr) {
-	return InterlockedDecrement((LONG volatile*)addr);
+  return InterlockedDecrement((LONG volatile*)addr);
 }
 
 #elif defined(__i386__) || defined(__x86_64__)
 
 extern inline int32_t pivot_atomic_add(int32_t increment, volatile int32_t* ptr) {
-  __asm__ __volatile__ ("lock; xaddl %0, %1"
-                          : "+r" (increment), "+m" (*ptr)
-                          : : "memory");
+  __asm__ __volatile__("lock; xaddl %0, %1"
+                       : "+r"(increment), "+m"(*ptr)
+                       : : "memory");
   /* increment now holds the old value of *ptr */
   return increment;
 }

@@ -7,13 +7,13 @@ template <typename T>
 class Slice {
 public:
   Slice()
-   : mData(NULL), mLength(0) {}
+    : mData(NULL), mLength(0) {}
 
   Slice(T* data, size_t size)
-   : mData(data), mLength(size) { }
+    : mData(data), mLength(size) { }
 
   Slice(const Slice& copy)
-   : mData(copy.mData), mLength(copy.mLength) { }
+    : mData(copy.mData), mLength(copy.mLength) { }
 
   size_t length() const {
     return mLength;
