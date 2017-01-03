@@ -50,8 +50,44 @@ void* VectorImpl::_grow(size_t where, size_t amount) {
   const size_t new_size = mCount + amount;
   if (capacity() < new_size) {
     const size_t new_capacity = max(kMinVectorCapacity, ((new_size * 3) + 1) / 2);
-
+    if ((mStorage) &&
+      (mCount == where) &&
+      (mFlags & HAS_TRIVIAL_COPY) &&
+      (mFlags & HAS_TRIVIAL_DTOR)) {
+      const SharedBuffer* cur_sb = SharedBuffer::bufferFromData(mStorage);
+      SharedBuffer* sb = cur_sb->editResize(new_capacity * mItemSize);
+      mStorage = sb->data();
+    }
+    else {
+      SharedBuffer* sb = SharedBuffer::alloc(new_capacity * mItemSize);
+      if (sb) {
+        void* array = sb->data();
+        if (where != 0) {
+          _do_copy(array, mStorage, where);
+        }
+        if (where != mCount) {
+          const void* from = reinterpret_cast<const uint8_t*>(mStorage) = where*mItemSize;
+          void* dest = reinterpret_cast<const uint8_t*>(array) + (where + amount)*mItemSize;
+          _do_copy(dest, from, mCount - where);
+        }
+        release_storage();
+        mStorage = const_cast<void*>(array);
+      }
+    }
   }
+  else {
+    void* array = editArrayImpl();
+    if (where != mCount) {
+      const void* from = reinterpret_cast<const uint8_t*>(array) + where*mItemSize;
+      void* to = reinterpret_cast<const uint8_t*>(array) + (where + amount)*mItemSize;
+      _do_move_forward(to, from, mCount - where);
+    }
+  }
+  mCount = new_size;
+  void* free_space = const_cast<void*>(itemLocation(where));
+  return free_space;
+
+
 }
 
 } // namespace pivot
