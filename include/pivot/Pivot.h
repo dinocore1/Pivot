@@ -6,6 +6,7 @@
 #include <pivot/config.h>
 #include <pivot/Status.h>
 #include <pivot/Types.h>
+#include <pivot/Memory.h>
 #include <pivot/Atomic.h>
 #include <pivot/SharedBuffer.h>
 #include <pivot/String8.h>
