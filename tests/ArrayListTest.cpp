@@ -28,9 +28,3 @@ TEST(ArrayList, deleteItem) {
   EXPECT_EQ(42, list[0]);
   EXPECT_EQ(68, list.itemAt(1));
 }
-
-int main(int argc, char* argv[]) {
-	::testing::InitGoogleTest(&argc, argv);
-	const int retval = RUN_ALL_TESTS();
-  return retval;
-}

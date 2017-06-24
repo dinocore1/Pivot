@@ -1,4 +1,4 @@
-project (Pivot VERSION 0.1 LANGUAGES CXX)
+
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	# enable parallel build
