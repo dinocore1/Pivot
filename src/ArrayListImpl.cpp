@@ -2,14 +2,10 @@
 
 namespace pivot {
 
-const size_t kMinVectorCapacity = 4;
-
-static inline size_t max(size_t a, size_t b) {
-    return a>b ? a : b;
-}
+const size_t kMinArrayCapacity = 4;
 
 ArrayListImpl::ArrayListImpl(size_t itemSize, uint32_t flags)
- : mStorage(0), mCount(0), mFlags(flags), mItemSize(itemSize) {}
+  : mStorage(0), mCount(0), mFlags(flags), mItemSize(itemSize) {}
 
 ArrayListImpl::~ArrayListImpl()
 {}
@@ -24,12 +20,12 @@ size_t ArrayListImpl::capacity() const {
 int ArrayListImpl::insertAt(const void* item, size_t index, size_t numItems) {
   if (index > size())
       return BAD_INDEX;
-  void* where = _grow(index, numItems);
+  void* where = grow(index, numItems);
   if (where) {
       if (item) {
-          _do_splat(where, item, numItems);
+          do_splat(where, item, numItems);
       } else {
-          _do_construct(where, numItems);
+          do_construct(where, numItems);
       }
   }
   return where ? index : (int)NO_MEMORY;
@@ -38,25 +34,25 @@ int ArrayListImpl::insertAt(const void* item, size_t index, size_t numItems) {
 void ArrayListImpl::release_storage() {
     if (mStorage) {
         const SharedBuffer* sb = SharedBuffer::bufferFromData(mStorage);
-        if (sb->release(SharedBuffer::eKeepStorage) == 1) {
-            _do_destroy(mStorage, mCount);
+        if (sb->release(SharedBuffer::eKeepStorage) == 0) {
+            do_destroy(mStorage, mCount);
             SharedBuffer::dealloc(sb);
         }
     }
 }
 
-void* ArrayListImpl::_grow(size_t where, size_t amount)
+void* ArrayListImpl::grow(size_t where, size_t amount)
 {
-//    ALOGV("_grow(this=%p, where=%d, amount=%d) count=%d, capacity=%d",
+//    ALOGV("grow(this=%p, where=%d, amount=%d) count=%d, capacity=%d",
 //        this, (int)where, (int)amount, (int)mCount, (int)capacity());
 
 //    ALOG_ASSERT(where <= mCount,
-//            "[%p] _grow: where=%d, amount=%d, count=%d",
+//            "[%p] grow: where=%d, amount=%d, count=%d",
 //            this, (int)where, (int)amount, (int)mCount); // caller already checked
 
     const size_t new_size = mCount + amount;
     if (capacity() < new_size) {
-        const size_t new_capacity = max(kMinVectorCapacity, ((new_size*3)+1)/2);
+        const size_t new_capacity = max(kMinArrayCapacity, ((new_size*3)+1)/2);
 //        ALOGV("grow vector %p, new_capacity=%d", this, (int)new_capacity);
         if ((mStorage) &&
             (mCount==where) &&
@@ -71,12 +67,12 @@ void* ArrayListImpl::_grow(size_t where, size_t amount)
             if (sb) {
                 void* array = sb->data();
                 if (where != 0) {
-                    _do_copy(array, mStorage, where);
+                    do_copy(array, mStorage, where);
                 }
                 if (where != mCount) {
                     const void* from = reinterpret_cast<const uint8_t *>(mStorage) + where*mItemSize;
                     void* dest = reinterpret_cast<uint8_t *>(array) + (where+amount)*mItemSize;
-                    _do_copy(dest, from, mCount-where);
+                    do_copy(dest, from, mCount-where);
                 }
                 release_storage();
                 mStorage = const_cast<void*>(array);
@@ -87,7 +83,7 @@ void* ArrayListImpl::_grow(size_t where, size_t amount)
         if (where != mCount) {
             const void* from = reinterpret_cast<const uint8_t *>(array) + where*mItemSize;
             void* to = reinterpret_cast<uint8_t *>(array) + (where+amount)*mItemSize;
-            _do_move_forward(to, from, mCount - where);
+            do_move_forward(to, from, mCount - where);
         }
     }
     mCount = new_size;
@@ -95,16 +91,16 @@ void* ArrayListImpl::_grow(size_t where, size_t amount)
     return free_space;
 }
 
-void ArrayListImpl::_shrink(size_t where, size_t amount)
+void ArrayListImpl::shrink(size_t where, size_t amount)
 {
     if (!mStorage)
         return;
 
-//    ALOGV("_shrink(this=%p, where=%d, amount=%d) count=%d, capacity=%d",
+//    ALOGV("shrink(this=%p, where=%d, amount=%d) count=%d, capacity=%d",
 //        this, (int)where, (int)amount, (int)mCount, (int)capacity());
 
 //    ALOG_ASSERT(where + amount <= mCount,
-//            "[%p] _shrink: where=%d, amount=%d, count=%d",
+//            "[%p] shrink: where=%d, amount=%d, count=%d",
 //            this, (int)where, (int)amount, (int)mCount); // caller already checked
 
     const size_t new_size = mCount - amount;
@@ -123,12 +119,12 @@ void ArrayListImpl::_shrink(size_t where, size_t amount)
             if (sb) {
                 void* array = sb->data();
                 if (where != 0) {
-                    _do_copy(array, mStorage, where);
+                    do_copy(array, mStorage, where);
                 }
                 if (where != new_size) {
                     const void* from = reinterpret_cast<const uint8_t *>(mStorage) + (where+amount)*mItemSize;
                     void* dest = reinterpret_cast<uint8_t *>(array) + where*mItemSize;
-                    _do_copy(dest, from, new_size - where);
+                    do_copy(dest, from, new_size - where);
                 }
                 release_storage();
                 mStorage = const_cast<void*>(array);
@@ -137,10 +133,10 @@ void ArrayListImpl::_shrink(size_t where, size_t amount)
     } else {
         void* array = editArrayImpl();
         void* to = reinterpret_cast<uint8_t *>(array) + where*mItemSize;
-        _do_destroy(to, amount);
+        do_destroy(to, amount);
         if (where != new_size) {
             const void* from = reinterpret_cast<uint8_t *>(array) + (where+amount)*mItemSize;
-            _do_move_backward(to, from, new_size - where);
+            do_move_backward(to, from, new_size - where);
         }
     }
     mCount = new_size;
@@ -150,21 +146,21 @@ size_t ArrayListImpl::itemSize() const {
     return mItemSize;
 }
 
-void ArrayListImpl::_do_construct(void* storage, size_t num) const
+void ArrayListImpl::do_construct(void* storage, size_t num) const
 {
     if (!(mFlags & HAS_TRIVIAL_CTOR)) {
         do_construct(storage, num);
     }
 }
 
-void ArrayListImpl::_do_destroy(void* storage, size_t num) const
+void ArrayListImpl::do_destroy(void* storage, size_t num) const
 {
     if (!(mFlags & HAS_TRIVIAL_DTOR)) {
         do_destroy(storage, num);
     }
 }
 
-void ArrayListImpl::_do_copy(void* dest, const void* from, size_t num) const
+void ArrayListImpl::do_copy(void* dest, const void* from, size_t num) const
 {
     if (!(mFlags & HAS_TRIVIAL_COPY)) {
         do_copy(dest, from, num);
@@ -173,17 +169,16 @@ void ArrayListImpl::_do_copy(void* dest, const void* from, size_t num) const
     }
 }
 
-void ArrayListImpl::_do_splat(void* dest, const void* item, size_t num) const {
+void ArrayListImpl::do_splat(void* dest, const void* item, size_t num) const {
     do_splat(dest, item, num);
 }
 
-void ArrayListImpl::_do_move_forward(void* dest, const void* from, size_t num) const {
+void ArrayListImpl::do_move_forward(void* dest, const void* from, size_t num) const {
     do_move_forward(dest, from, num);
 }
 
-void ArrayListImpl::_do_move_backward(void* dest, const void* from, size_t num) const {
+void ArrayListImpl::do_move_backward(void* dest, const void* from, size_t num) const {
     do_move_backward(dest, from, num);
 }
-
 
 } // namespace pivot

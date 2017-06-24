@@ -23,6 +23,7 @@ inline int32_t pivot_atomic_dec(volatile int32_t* addr) {
 #include <Windows.h>
 
 #define pivot_atomic_int_t LONG
+#define pivot_atomic_int_t_dec __declspec (align(8)) volatile
 
 inline pivot_atomic_int_t pivot_atomic_inc(volatile pivot_atomic_int_t* addr) {
   return InterlockedIncrement(addr);

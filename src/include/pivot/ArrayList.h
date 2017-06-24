@@ -24,15 +24,15 @@ protected:
 
 private:
 
-  void* _grow(size_t where, size_t amount);
-  void  _shrink(size_t where, size_t amount);
+  void* grow(size_t where, size_t amount);
+  void  shrink(size_t where, size_t amount);
 
-  inline void _do_construct(void* storage, size_t num) const;
-  inline void _do_destroy(void* storage, size_t num) const;
-  inline void _do_copy(void* dest, const void* from, size_t num) const;
-  inline void _do_splat(void* dest, const void* item, size_t num) const;
-  inline void _do_move_forward(void* dest, const void* from, size_t num) const;
-  inline void _do_move_backward(void* dest, const void* from, size_t num) const;
+  inline void do_construct(void* storage, size_t num) const;
+  inline void do_destroy(void* storage, size_t num) const;
+  inline void do_copy(void* dest, const void* from, size_t num) const;
+  inline void do_splat(void* dest, const void* item, size_t num) const;
+  inline void do_move_forward(void* dest, const void* from, size_t num) const;
+  inline void do_move_backward(void* dest, const void* from, size_t num) const;
 
 
 

@@ -28,7 +28,7 @@ public:
   inline size_t size() const;
 
   void retain() const;
-  void release(uint32_t flags = 0) const;
+  pivot_atomic_int_t release(uint32_t flags = 0) const;
   inline bool isOnlyOwner() const;
 
   // edit the buffer (get a writtable version of it)
@@ -43,7 +43,7 @@ private:
   SharedBuffer(const SharedBuffer&);
   SharedBuffer& operator= (const SharedBuffer&);
 
-  mutable pivot_atomic_int_t mRefs;
+  mutable pivot_atomic_int_t_dec pivot_atomic_int_t mRefs;
   size_t mSize;
 
 };

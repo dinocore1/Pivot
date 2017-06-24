@@ -2,14 +2,12 @@
 #define PIVOT_PIVOT_H
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <stddef.h>
 
 #include <pivot/Atomic.h>
 #include <pivot/Status.h>
 #include <pivot/TypeHelpers.h>
 #include <pivot/SharedBuffer.h>
-#include <pivot/Memory.h>
 
 #include <pivot/ArrayList.h>
 
