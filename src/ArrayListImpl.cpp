@@ -10,6 +10,35 @@ ArrayListImpl::ArrayListImpl(size_t itemSize, uint32_t flags)
 ArrayListImpl::~ArrayListImpl()
 {}
 
+void* ArrayListImpl::editArrayImpl() {
+    if (mStorage) {
+        SharedBuffer* sb = SharedBuffer::bufferFromData(mStorage)->attemptEdit();
+        if (sb == 0) {
+            sb = SharedBuffer::alloc(capacity() * mItemSize);
+            if (sb) {
+                _do_copy(sb->data(), mStorage, mCount);
+                release_storage();
+                mStorage = sb->data();
+            }
+        }
+    }
+    return mStorage;
+}
+
+const void* ArrayListImpl::itemLocation(size_t index) const {
+    //ALOG_ASSERT(index<capacity(),
+    //    "[%p] itemLocation: index=%d, capacity=%d, count=%d",
+    //    this, (int)index, (int)capacity(), (int)mCount);
+
+    if (index < capacity()) {
+        const  void* buffer = arrayImpl();
+        if (buffer) {
+            return reinterpret_cast<const char*>(buffer) + index*mItemSize;
+        }
+    }
+    return 0;
+}
+
 size_t ArrayListImpl::capacity() const {
   if(mStorage) {
     return SharedBuffer::bufferFromData(mStorage)->size() / mItemSize;

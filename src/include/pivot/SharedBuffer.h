@@ -37,6 +37,9 @@ public:
   // edit the buffer, resizing if needed
   SharedBuffer* editResize(size_t size) const;
 
+  //! like edit() but fails if a copy is required
+  SharedBuffer* attemptEdit() const;
+
 private:
   SharedBuffer();
   ~SharedBuffer();

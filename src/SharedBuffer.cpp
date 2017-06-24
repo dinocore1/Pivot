@@ -70,6 +70,13 @@ SharedBuffer* SharedBuffer::editResize(size_t newSize) const {
   return sb;
 }
 
+SharedBuffer* SharedBuffer::attemptEdit() const {
+  if (isOnlyOwner()) {
+      return const_cast<SharedBuffer*>(this);
+  }
+  return 0;
+}
+
 
 
 } // namespace pivot
