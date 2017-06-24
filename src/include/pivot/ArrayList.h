@@ -16,34 +16,54 @@ public:
 
   inline size_t size() const;
   size_t capacity() const;
+  inline const size_t itemSize() const;
+
+  inline const void* arrayImpl() const;
+  void* editArrayImpl();
 
   int insertAt(const void* item, size_t index, size_t numItems);
+  const void* itemLocation(size_t index) const;
 
 protected:
   void release_storage();
+  virtual void do_construct(void* storage, size_t num) const = 0;
+  virtual void do_destroy(void* storage, size_t num) const = 0;
+  virtual void do_copy(void* dest, const void* from, size_t num) const = 0;
+  virtual void do_splat(void* dest, const void* item, size_t num) const = 0;
+  virtual void do_move_forward(void* dest, const void* from, size_t num) const = 0;
+  virtual void do_move_backward(void* dest, const void* from, size_t num) const = 0;
+
 
 private:
+  void* _grow(size_t where, size_t amount);
+  void  _shrink(size_t where, size_t amount);
 
-  void* grow(size_t where, size_t amount);
-  void  shrink(size_t where, size_t amount);
+  inline void _do_construct(void* storage, size_t num) const;
+  inline void _do_destroy(void* storage, size_t num) const;
+  inline void _do_copy(void* dest, const void* from, size_t num) const;
+  inline void _do_splat(void* dest, const void* item, size_t num) const;
+  inline void _do_move_forward(void* dest, const void* from, size_t num) const;
+  inline void _do_move_backward(void* dest, const void* from, size_t num) const;
 
-  inline void do_construct(void* storage, size_t num) const;
-  inline void do_destroy(void* storage, size_t num) const;
-  inline void do_copy(void* dest, const void* from, size_t num) const;
-  inline void do_splat(void* dest, const void* item, size_t num) const;
-  inline void do_move_forward(void* dest, const void* from, size_t num) const;
-  inline void do_move_backward(void* dest, const void* from, size_t num) const;
-
-
-
-  void* mStorage;   // base address of the vector
+  void* mStorage;   // base address of the ArrayList
   size_t mCount;     // number of items
   const uint32_t mFlags;
   const size_t mItemSize;
 };
 
+inline
 size_t ArrayListImpl::size() const {
   return mCount;
+}
+
+inline
+const void* ArrayListImpl::arrayImpl() const {
+  return mStorage;
+}
+
+inline
+const size_t ArrayListImpl::itemSize() const {
+  return mItemSize;
 }
 
 template<typename TYPE>
@@ -55,7 +75,19 @@ public:
 
   const TYPE& operator[](size_t index) const;
 
+protected:
+    virtual void    do_construct(void* storage, size_t num) const;
+    virtual void    do_destroy(void* storage, size_t num) const;
+    virtual void    do_copy(void* dest, const void* from, size_t num) const;
+    virtual void    do_splat(void* dest, const void* item, size_t num) const;
+    virtual void    do_move_forward(void* dest, const void* from, size_t num) const;
+    virtual void    do_move_backward(void* dest, const void* from, size_t num) const;
 };
+
+// ArrayList<T> can be trivially moved using memcpy() because moving does not
+// require any change to the underlying SharedBuffer contents or reference count.
+template<typename T> struct trait_trivial_move<ArrayList<T> > { enum { value = true }; };
+
 
 template<typename TYPE> inline
 ArrayList<TYPE>::ArrayList()
@@ -69,6 +101,36 @@ ArrayList<TYPE>::ArrayList()
 template<typename TYPE> inline
 ArrayList<TYPE>::~ArrayList()
 {}
+
+  template<class TYPE>
+  void ArrayList<TYPE>::do_construct(void* storage, size_t num) const {
+      construct_type( reinterpret_cast<TYPE*>(storage), num );
+  }
+
+  template<class TYPE>
+  void ArrayList<TYPE>::do_destroy(void* storage, size_t num) const {
+      destroy_type( reinterpret_cast<TYPE*>(storage), num );
+  }
+
+  template<class TYPE>
+  void ArrayList<TYPE>::do_copy(void* dest, const void* from, size_t num) const {
+      copy_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num );
+  }
+
+  template<class TYPE>
+  void ArrayList<TYPE>::do_splat(void* dest, const void* item, size_t num) const {
+      splat_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(item), num );
+  }
+
+  template<class TYPE>
+  void ArrayList<TYPE>::do_move_forward(void* dest, const void* from, size_t num) const {
+      move_forward_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num );
+  }
+
+  template<class TYPE>
+  void ArrayList<TYPE>::do_move_backward(void* dest, const void* from, size_t num) const {
+      move_backward_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num );
+  }
 
 } // namespace pivot
 
