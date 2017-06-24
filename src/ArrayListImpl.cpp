@@ -15,6 +15,17 @@ ArrayListImpl::~ArrayListImpl() {
   // We can't call _do_destroy() here because the vtable is already gone.
 }
 
+int ArrayListImpl::removeItemsAt(size_t index, size_t count) {
+//    ALOG_ASSERT((index+count)<=size(),
+//        "[%p] remove: index=%d, count=%d, size=%d",
+//               this, (int)index, (int)count, (int)size());
+
+    if ((index+count) > size())
+        return BAD_VALUE;
+   _shrink(index, count);
+   return index;
+}
+
 void ArrayListImpl::finish_vector() {
     release_storage();
     mStorage = 0;

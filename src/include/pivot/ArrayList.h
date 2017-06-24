@@ -17,6 +17,7 @@ public:
 
   inline size_t size() const;
   size_t capacity() const;
+  int removeItemsAt(size_t index, size_t count = 1);
   void clear();
   inline const size_t itemSize() const;
 
@@ -77,10 +78,27 @@ public:
   virtual ~ArrayList();
 
   const TYPE& operator[](size_t index) const;
+  const TYPE& itemAt(size_t index) const;
+
+  //! returns number of items in the vector
+  inline size_t size() const { return ArrayListImpl::size(); }
+  //! returns whether or not the vector is empty
+  inline bool isEmpty() const { return ArrayListImpl::isEmpty(); }
+  //! returns how many items can be stored without reallocating the backing store
+  inline size_t capacity() const { return ArrayListImpl::capacity(); }
+
+  //! read-only C-style access
+  inline const TYPE* array() const;
+  //! read-write C-style access
+  TYPE* editArray();
 
   //! same as push() but returns the index the item was added at (or an error)
   int add(const TYPE& item);
 
+  //! remove several items
+  inline int removeItemsAt(size_t index, size_t count = 1);
+  //! remove one item
+  inline int removeAt(size_t index) { return removeItemsAt(index); }
 
   /*
   //! insert one or several items initialized with their default constructor
@@ -100,10 +118,7 @@ public:
   //! replace an item with a new one
   ssize_t replaceAt(const TYPE& item, size_t index);
 
-  //! remove several items
-  inline  ssize_t         removeItemsAt(size_t index, size_t count = 1);
-  //! remove one item
-  inline  ssize_t         removeAt(size_t index)  { return removeItemsAt(index); }
+
   */
 
 protected:
@@ -135,8 +150,36 @@ ArrayList<TYPE>::~ArrayList() {
 }
 
 template<class TYPE> inline
+const TYPE& ArrayList<TYPE>::operator[](size_t index) const {
+// LOG_FATAL_IF(index>=size(),
+//            "%s: index=%u out of range (%u)", __PRETTY_FUNCTION__,
+//            int(index), int(size()));
+    return *(array() + index);
+}
+
+template<class TYPE> inline
+const TYPE& ArrayList<TYPE>::itemAt(size_t index) const {
+  return operator[](index);
+}
+
+template<class TYPE> inline
 int ArrayList<TYPE>::add(const TYPE& item) {
     return ArrayListImpl::add(&item);
+}
+
+template<class TYPE> inline
+int ArrayList<TYPE>::removeItemsAt(size_t index, size_t count) {
+    return ArrayListImpl::removeItemsAt(index, count);
+}
+
+template<class TYPE> inline
+const TYPE* ArrayList<TYPE>::array() const {
+    return static_cast<const TYPE *>(arrayImpl());
+}
+
+template<class TYPE> inline
+TYPE* ArrayList<TYPE>::editArray() {
+    return static_cast<TYPE *>(editArrayImpl());
 }
 
 template<class TYPE>
