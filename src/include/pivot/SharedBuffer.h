@@ -7,10 +7,17 @@ class SharedBuffer {
 public:
 
   enum {
-    KeepStorage = 0x00000001
+    eKeepStorage = 0x00000001
   };
 
   static SharedBuffer* alloc(size_t size);
+
+  /*! free the memory associated with the SharedBuffer.
+  * Fails if there are any users associated with this SharedBuffer.
+  * In other words, the buffer must have been release by all its
+  * users.
+  */
+  static int dealloc(const SharedBuffer* released);
 
   static inline SharedBuffer* bufferFromData(void* data);
   static inline const SharedBuffer* bufferFromData(const void* data);
@@ -36,35 +43,42 @@ private:
   SharedBuffer(const SharedBuffer&);
   SharedBuffer& operator= (const SharedBuffer&);
 
-  mutable int32_t mRefs;
+  mutable pivot_atomic_int_t mRefs;
   size_t mSize;
 
 };
 
+inline
 const void* SharedBuffer::data() const {
   return this + 1;
 }
 
+inline
 size_t SharedBuffer::size() const {
   return mSize;
 }
 
+inline
 void* SharedBuffer::data() {
   return this + 1;
 }
 
+inline
 bool SharedBuffer::isOnlyOwner() const {
   return (mRefs == 1);
 }
 
+inline
 SharedBuffer* SharedBuffer::bufferFromData(void* data) {
   return data ? static_cast<SharedBuffer*>(data)-1 : 0;
 }
 
+inline
 const SharedBuffer* SharedBuffer::bufferFromData(const void* data) {
   return data ? static_cast<const SharedBuffer*>(data)-1 : 0;
 }
 
+inline
 size_t SharedBuffer::sizeFromData(const void* data) {
   return data ? bufferFromData(data)->mSize : 0;
 }

@@ -6,10 +6,9 @@
 extern "C" {
 #endif
 
-int32_t pivot_atomic_inc(volatile int32_t* addr);
-int32_t pivot_atomic_dec(volatile int32_t* addr);
-
 #if defined(__GNUC__)
+
+#define pivot_atomic_int_t int32_t
 
 inline int32_t pivot_atomic_inc(volatile int32_t* addr) {
   return __atomic_add_fetch(addr, 1, __ATOMIC_RELAXED);
@@ -23,12 +22,14 @@ inline int32_t pivot_atomic_dec(volatile int32_t* addr) {
 
 #include <Windows.h>
 
-inline int32_t pivot_atomic_inc(volatile int32_t* addr) {
-  return InterlockedIncrement((LONG volatile*)addr);
+#define pivot_atomic_int_t LONG
+
+inline pivot_atomic_int_t pivot_atomic_inc(volatile pivot_atomic_int_t* addr) {
+  return InterlockedIncrement(addr);
 }
 
-inline int32_t pivot_atomic_dec(volatile int32_t* addr) {
-  return InterlockedDecrement((LONG volatile*)addr);
+inline pivot_atomic_int_t pivot_atomic_dec(volatile pivot_atomic_int_t* addr) {
+  return InterlockedDecrement(addr);
 }
 
 #elif defined(__i386__) || defined(__x86_64__)

@@ -10,7 +10,8 @@ endif()
 
 
 add_library(${PROJECT_NAME}
-  "ArrayListImpl.cpp"
+	"SharedBuffer.cpp"
+  #"ArrayListImpl.cpp"
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

@@ -1,4 +1,8 @@
 
+add_executable(sharedBufferTest sharedBufferTest.cpp)
+target_link_libraries(sharedBufferTest Pivot gtest)
+add_test(sharedBufferTest sharedBufferTest)
+
 add_executable(arrayListTest ArrayListTest.cpp)
 target_link_libraries(arrayListTest Pivot gtest)
 add_test(arrayListTest arrayListTest)

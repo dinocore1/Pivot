@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 
+#include <pivot/Atomic.h>
 #include <pivot/Status.h>
 #include <pivot/TypeHelpers.h>
 #include <pivot/SharedBuffer.h>
