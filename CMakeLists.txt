@@ -56,9 +56,12 @@ export (TARGETS pivot FILE PivotConfig.cmake)
 export (PACKAGE pivot)
 
 
-if (BuildTests)
-  enable_testing ()
-  add_subdirectory(test)
+# unit tests
+if(BuildTests)
+	set(VERSION_GTEST "1.8.0" CACHE STRING "Google Test framework version")
+	enable_testing ()
+	add_subdirectory(3rdParty/gtest)
+	add_subdirectory(tests)
 endif()
 
 if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )

@@ -1,39 +1,26 @@
-# -----------------------------------------------------------------------------
-# CMake project wrapper Makefile ----------------------------------------------
-# -----------------------------------------------------------------------------
-
 SHELL := /bin/bash
 RM    := rm -rf
 MKDIR := mkdir -p
 
-.PHONY: clean format codeblocks
+.PHONY: all clean build test format codeblocks
 
-all: ./build/Makefile
-	@ $(MAKE) -C build
+all: build test
 
-./build/Makefile:
-	@  ($(MKDIR) build > /dev/null)
-	@  (cd build > /dev/null 2>&1 && cmake ..)
-
-distclean:
-	@  ($(MKDIR) build > /dev/null)
-	@  (cd build > /dev/null 2>&1 && cmake .. > /dev/null 2>&1)
-	@- $(MAKE) --silent -C build clean || true
-	@- $(RM) ./build/Makefile
-	@- $(RM) ./build/src
-	@- $(RM) ./build/test
-	@- $(RM) ./build/CMake*
-	@- $(RM) ./build/cmake.*
-	@- $(RM) ./build/*.cmake
-	@- $(RM) ./build/*.txt
-
-ifeq ($(findstring distclean,$(MAKECMDGOALS)),)
-	$(MAKECMDGOALS): ./build/Makefile
-	@ $(MAKE) -C build $(MAKECMDGOALS)
-endif
+clean:
+	rm -rf build
 
 format:
-	sh scripts/format.sh
+	sh script/format.sh
+
+build/Makefile:
+	mkdir build
+	cd build && cmake ..
+
+build: build/Makefile
+	cd build && cmake --build .
+
+test: build
+	cd build && cmake --build . --target test
 
 codeblocks:
 	$(MKDIR) codeblocks

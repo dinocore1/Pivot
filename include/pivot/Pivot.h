@@ -2,6 +2,8 @@
 #define PIVOT_PIVOT_H
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 #include <pivot/config.h>
 #include <pivot/Status.h>
