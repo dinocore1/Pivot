@@ -7,8 +7,41 @@ const size_t kMinArrayCapacity = 4;
 ArrayListImpl::ArrayListImpl(size_t itemSize, uint32_t flags)
   : mStorage(0), mCount(0), mFlags(flags), mItemSize(itemSize) {}
 
-ArrayListImpl::~ArrayListImpl()
-{}
+ArrayListImpl::~ArrayListImpl() {
+//  ALOGW_IF(mCount,
+//      "[%p] subclasses of VectorImpl must call finish_vector()"
+//      " in their destructor. Leaking %d bytes.",
+//      this, (int)(mCount*mItemSize));
+  // We can't call _do_destroy() here because the vtable is already gone.
+}
+
+void ArrayListImpl::finish_vector() {
+    release_storage();
+    mStorage = 0;
+    mCount = 0;
+}
+
+void ArrayListImpl::clear() {
+    _shrink(0, mCount);
+}
+
+int ArrayListImpl::insertAt(const void* item, size_t index, size_t numItems) {
+    if (index > size())
+        return BAD_INDEX;
+    void* where = _grow(index, numItems);
+    if (where) {
+        if (item) {
+            _do_splat(where, item, numItems);
+        } else {
+            _do_construct(where, numItems);
+        }
+    }
+    return where ? index : (int)NO_MEMORY;
+}
+
+int ArrayListImpl::add(const void* item) {
+  return insertAt(item, size());
+}
 
 void* ArrayListImpl::editArrayImpl() {
     if (mStorage) {

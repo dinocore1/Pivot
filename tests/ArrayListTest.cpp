@@ -7,6 +7,7 @@ using namespace pivot;
 
 TEST(ArrayList, create) {
   ArrayList<int> list;
+  list.add(42);
 }
 
 int main(int argc, char* argv[]) {
