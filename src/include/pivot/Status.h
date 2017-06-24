@@ -1,7 +1,7 @@
 #ifndef PIVOT_STATUS_H
 #define PIVOT_STATUS_H
 
-#include <sys/types.h>
+//#include <sys/types.h>
 #include <errno.h>
 
 namespace pivot {
