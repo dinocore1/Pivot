@@ -9,12 +9,13 @@ extern "C" {
 #if defined(__GNUC__)
 
 #define pivot_atomic_int_t int32_t
+#define pivot_atomic_int_t_dec volatile
 
-inline int32_t pivot_atomic_inc(volatile int32_t* addr) {
+inline int32_t pivot_atomic_inc(volatile pivot_atomic_int_t* addr) {
   return __atomic_add_fetch(addr, 1, __ATOMIC_RELAXED);
 }
 
-inline int32_t pivot_atomic_dec(volatile int32_t* addr) {
+inline int32_t pivot_atomic_dec(volatile pivot_atomic_int_t* addr) {
   return __atomic_sub_fetch(addr, 1, __ATOMIC_RELAXED);
 }
 

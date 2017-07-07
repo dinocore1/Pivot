@@ -214,4 +214,4 @@ void ArrayList<TYPE>::do_move_backward(void* dest, const void* from, size_t num)
 
 } // namespace pivot
 
-#endif PIVOT_ARRAYLIST_H
+#endif // PIVOT_ARRAYLIST_H

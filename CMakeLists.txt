@@ -1,35 +1,58 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-include("cmake/HunterGate.cmake")
+project(pivot VERSION 0.1.0 LANGUAGES CXX C)
 
-# 1. Try to detect hunter by:
-#   * cmake variable
-#   * environment variable
-#   * in HOME (`.hunter` directory)
-#   * in SYSTEMDRIVE (`.hunter` directory, windows only)
-#   * in USERPROFILE (`.hunter` directory, windows only)
-# 2. if failed, download it
-# 3. set HUNTER_GATE_* variables
-# 4. include master file: 'include(${HUNTER_SELF}/cmake/Hunter)
-HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.18.12.tar.gz"
-    SHA1 "7e8c74787e08c476484d3e5106524fe7a5a0cc56"
+OPTION(BUILD_TESTS "Build unit tests" ON)
+
+
+
+add_library(pivot
+  include/pivot/ArrayList.h
+  include/pivot/Atomic.h
+  include/pivot/File.h
+  include/pivot/FileOutputStream.h
+  include/pivot/InputStream.h
+  include/pivot/Memory.h
+  include/pivot/Optional.h
+  include/pivot/OutputStream.h
+  include/pivot/Pivot.h
+  include/pivot/SharedBuffer.h
+  include/pivot/Slice.h
+  include/pivot/Status.h
+  include/pivot/String8.h
+  include/pivot/TypeHelpers.h
+  include/pivot/Types.h
+  include/pivot/Vector.h
+  include/pivot/VectorImpl.h
+  include/pivot/View.h
+  src/ArrayListImpl.cpp
+  src/File.cpp
+  src/FileOutputStream.cpp
+  src/SharedBuffer.cpp
+  src/Static.cpp
+  src/Static.h
+  src/String8.cpp
+  src/VectorImpl.cpp
 )
 
-project(Pivot VERSION 0.1 LANGUAGES CXX)
+target_include_directories(pivot
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+  PRIVATE src
+)
 
-option (BuildTests "Build unit tests" ON)
 
-add_subdirectory(src)
+install(TARGETS pivot
+  EXPORT pivotConfig
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib/static
+)
 
-# unit tests
-if(BuildTests)
-	hunter_add_package(GTest)
-	find_package(GTest CONFIG REQUIRED)
-	enable_testing ()
-	add_subdirectory(tests)
-endif()
+install(DIRECTORY include/
+  DESTINATION include
+)
 
-if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
-    message( FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt." )
-endif()
+install(EXPORT pivotConfig
+  DESTINATION cmake
+)
