@@ -1,5 +1,7 @@
 #include <pivot/Pivot.h>
 
+#include <cstdlib>
+#include <cstring>
 
 namespace pivot {
 

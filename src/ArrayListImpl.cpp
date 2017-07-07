@@ -1,8 +1,14 @@
 #include <pivot/Pivot.h>
 
+#include <cstring>
+
 namespace pivot {
 
 const size_t kMinArrayCapacity = 4;
+
+static inline size_t max(size_t a, size_t b) {
+  return a>b ? a : b;
+}
 
 ArrayListImpl::ArrayListImpl(size_t itemSize, uint32_t flags)
   : mStorage(0), mCount(0), mFlags(flags), mItemSize(itemSize) {}

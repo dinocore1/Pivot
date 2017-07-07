@@ -16,6 +16,7 @@ public:
   void finish_vector();
 
   inline size_t size() const;
+  inline bool isEmpty() const;
   size_t capacity() const;
   int removeItemsAt(size_t index, size_t count = 1);
   void clear();
@@ -58,6 +59,11 @@ private:
 inline
 size_t ArrayListImpl::size() const {
   return mCount;
+}
+
+inline
+bool ArrayListImpl::isEmpty() const {
+  return mCount == 0;
 }
 
 inline

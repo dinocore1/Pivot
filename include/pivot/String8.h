@@ -7,7 +7,7 @@ class String8 {
 public:
   String8();
   String8(const String8&);
-  String8(const char*);
+  explicit String8(const char*);
   ~String8();
 
   inline size_t length() const;
