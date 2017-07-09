@@ -18,6 +18,8 @@ public:
   inline String8& operator+=(const String8&);
   inline String8 operator+(const String8&) const;
 
+  void clear();
+
   void setTo(const String8&);
   inline String8& operator=(const String8&);
 

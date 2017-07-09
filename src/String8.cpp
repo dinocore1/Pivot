@@ -71,16 +71,16 @@ String8::~String8() {
   SharedBuffer::bufferFromData(mString)->release();
 }
 
-status_t String8::append(const String8& o) {
-  const size_t otherLen = o.length();
-  if(length() == 0) {
-    setTo(0);
-    return OK;
-  } else if(otherLen == 0) {
-    return OK;
-  }
+status_t String8::append(const String8& other) {
+  const size_t otherLen = other.bytes();
+    if (bytes() == 0) {
+        setTo(other);
+        return NO_ERROR;
+    } else if (otherLen == 0) {
+        return NO_ERROR;
+    }
 
-  return real_append(o.string(), otherLen);
+    return real_append(other.string(), otherLen);
 }
 
 status_t String8::real_append(const char* other, size_t otherLen) {
@@ -96,6 +96,11 @@ status_t String8::real_append(const char* other, size_t otherLen) {
     return OK;
   }
   return NO_MEMORY;
+}
+
+void String8::clear() {
+  SharedBuffer::bufferFromData(mString)->release();
+  mString = getEmptyString();
 }
 
 void String8::setTo(const String8& o) {
