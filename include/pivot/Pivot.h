@@ -10,6 +10,7 @@
 #include <pivot/Status.h>
 #include <pivot/TypeHelpers.h>
 #include <pivot/SharedBuffer.h>
+#include <pivot/String8.h>
 
 #include <pivot/ArrayList.h>
 

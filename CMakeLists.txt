@@ -27,6 +27,7 @@ add_library(pivot
   include/pivot/View.h
   src/ArrayListImpl.cpp
   src/SharedBuffer.cpp
+  src/Static.cpp
   src/String8.cpp
 )
 
@@ -51,3 +52,7 @@ install(DIRECTORY include/
 install(EXPORT pivotConfig
   DESTINATION cmake
 )
+
+add_executable(stringtest tests/stringtest.cpp)
+target_link_libraries(stringtest pivot)
+add_test(stringtest stringtest)

@@ -13,8 +13,8 @@ int main() {
   str2 = createString();
   printf("done %s\n", (const char*)str2);
 
-  String8 str3 = String8("this ") + "is cool";
-  printf("str3: %s\n", (const char*)str3);
+  //String8 str3 = String8("this ") + "is cool";
+  //printf("str3: %s\n", (const char*)str3);
 
   return 0;
 }
