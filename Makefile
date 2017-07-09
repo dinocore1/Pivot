@@ -2,7 +2,7 @@ SHELL := /bin/bash
 RM    := rm -rf
 MKDIR := mkdir -p
 
-.PHONY: all clean build test format codeblocks
+.PHONY: all clean build test format codeblocks xcode
 
 all: build test
 
@@ -25,3 +25,7 @@ test: build
 codeblocks:
 	$(MKDIR) codeblocks
 	cd codeblocks && cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' ..
+
+xcode:
+	$(MKDIR) xcode
+	cd xcode && cmake -DCMAKE_BUILD_TYPE=Debug -G 'Xcode' ..

@@ -37,6 +37,15 @@ public:
   inline String8& operator+=(const String8&);
   inline String8 operator+(const String8&) const;
 
+  int compare(const String8& other) const;
+
+  inline bool operator<(const String8&) const;
+  inline bool operator<=(const String8&) const;
+  inline bool operator==(const String8&) const;
+  inline bool operator!=(const String8&) const;
+  inline bool operator>(const String8&) const;
+  inline bool operator>=(const String8&) const;
+
   void clear();
   void setTo(const String8&);
 
@@ -80,6 +89,34 @@ inline String8 String8::operator+(const String8& o) const {
 inline String8& String8::operator=(const String8& other) {
   setTo(other);
   return *this;
+}
+
+//inline int String8::compare(const String8& other) const {
+//  return strcmp(mString, other.mString);
+//}
+
+inline bool String8::operator<(const String8& o) const {
+  return compare(o) < 0;
+}
+
+inline bool String8::operator<=(const String8& o) const {
+  return compare(o) <= 0;
+}
+
+inline bool String8::operator==(const String8& o) const {
+  return compare(o) == 0;
+}
+
+inline bool String8::operator!=(const String8& o) const {
+  return compare(o) != 0;
+}
+
+inline bool String8::operator>(const String8& o) const {
+  return compare(o) > 0;
+}
+
+inline bool String8::operator>=(const String8& o) const {
+  return compare(o) >= 0;
 }
 
 inline const char* String8::string() const {

@@ -4,3 +4,4 @@ build/
 
 # Mac OSX stuff
 .DS_Store
+xcode/

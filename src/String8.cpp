@@ -188,5 +188,9 @@ void String8::setTo(const String8& o) {
   mString = o.mString;
 }
 
+int String8::compare(const String8& other) const {
+  return strcmp(mString, other.mString);
+}
+
 
 } // namespace pivot
