@@ -5,6 +5,8 @@
 
 #include <string.h>
 
+#include <cstdio>
+
 //For some reason Windows's linker excludes static variable symbols when statically linking libraries
 //objects. This is a weird workaround. See: http://stackoverflow.com/questions/599035/force-visual-studio-to-link-all-symbols-in-a-lib-file
 //another solution is to set 'Linker->General->Link Library Dependencies' and 'Linker->General->Use Library Dependency Inputs' set to 'Yes' for your main app
@@ -64,11 +66,34 @@ String8::String8(const char* o)
   if(mString == NULL) {
     mString = getEmptyString();
   }
+}
 
+String8::String8(const char* o, size_t numChars)
+ : mString(allocFromUTF8(o, numChars)){
+
+  if(mString == NULL) {
+    mString = getEmptyString();
+  }
 }
 
 String8::~String8() {
   SharedBuffer::bufferFromData(mString)->release();
+}
+
+String8 String8::format(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+
+  String8 result(formatV(fmt, args));
+
+  va_end(args);
+  return result;
+}
+
+String8 String8::formatV(const char* fmt, va_list args) {
+  String8 result;
+  result.appendFormatV(fmt, args);
+  return result;
 }
 
 status_t String8::append(const String8& other) {
@@ -81,6 +106,31 @@ status_t String8::append(const String8& other) {
     }
 
     return real_append(other.string(), otherLen);
+}
+
+status_t String8::appendFormat(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+
+  status_t result = appendFormatV(fmt, args);
+
+  va_end(args);
+  return result;
+}
+
+status_t String8::appendFormatV(const char* fmt, va_list args) {
+    int result = NO_ERROR;
+    int n = vsnprintf(NULL, 0, fmt, args);
+    if (n != 0) {
+        size_t oldLength = length();
+        char* buf = lockBuffer(oldLength + n);
+        if (buf) {
+            vsnprintf(buf + oldLength, n + 1, fmt, args);
+        } else {
+            result = NO_MEMORY;
+        }
+    }
+    return result;
 }
 
 status_t String8::real_append(const char* other, size_t otherLen) {
@@ -96,6 +146,35 @@ status_t String8::real_append(const char* other, size_t otherLen) {
     return OK;
   }
   return NO_MEMORY;
+}
+
+char* String8::lockBuffer(size_t size) {
+    SharedBuffer* buf = SharedBuffer::bufferFromData(mString)->editResize(size+1);
+    if (buf) {
+        char* str = (char*)buf->data();
+        mString = str;
+        return str;
+    }
+    return NULL;
+}
+
+void String8::unlockBuffer() {
+    unlockBuffer(strlen(mString));
+}
+
+status_t String8::unlockBuffer(size_t size) {
+    if (size != this->length()) {
+        SharedBuffer* buf = SharedBuffer::bufferFromData(mString)->editResize(size+1);
+        if (! buf) {
+            return NO_MEMORY;
+        }
+
+        char* str = (char*)buf->data();
+        str[size] = 0;
+        mString = str;
+    }
+
+    return NO_ERROR;
 }
 
 void String8::clear() {

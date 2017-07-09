@@ -8,23 +8,44 @@ public:
   String8();
   String8(const String8&);
   explicit String8(const char*);
+  explicit String8(const char*, size_t numChars);
   ~String8();
+
+  static inline const String8 empty();
+
+  static String8 format(const char* fmt, ...)
+  #if defined(__GNUC__)
+  __attribute__((format (printf, 1, 2)))
+  #endif
+  ;
+  static String8 formatV(const char* fmt, va_list args);
 
   inline size_t length() const;
   inline size_t bytes() const;
 
   status_t append(const String8&);
+  status_t appendFormat(const char* fmt, ...)
+  #if defined(__GNUC__)
+    __attribute__((format (printf, 2, 3)))
+  #endif
+  ;
+  status_t appendFormatV(const char* fmt, va_list);
+
+
+  inline String8& operator=(const String8&);
 
   inline String8& operator+=(const String8&);
   inline String8 operator+(const String8&) const;
 
   void clear();
-
   void setTo(const String8&);
-  inline String8& operator=(const String8&);
 
   inline const char* string() const;
   inline operator const char* () const;
+
+  char* lockBuffer(size_t size);
+  void unlockBuffer();
+  status_t unlockBuffer(size_t size);
 
 private:
   const char* mString;
@@ -32,6 +53,10 @@ private:
   status_t real_append(const char* other, size_t numChars);
 
 };
+
+inline const String8 String8::empty() {
+  return String8();
+}
 
 inline size_t String8::length() const {
   return SharedBuffer::sizeFromData(mString) - 1;

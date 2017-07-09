@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include <cstdarg>
+
 #include <pivot/Atomic.h>
 #include <pivot/Status.h>
 #include <pivot/TypeHelpers.h>
