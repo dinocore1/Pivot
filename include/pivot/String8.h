@@ -14,9 +14,9 @@ public:
   static inline const String8 empty();
 
   static String8 format(const char* fmt, ...)
-  #if defined(__GNUC__)
-  __attribute__((format (printf, 1, 2)))
-  #endif
+#if defined(__GNUC__)
+  __attribute__((format(printf, 1, 2)))
+#endif
   ;
   static String8 formatV(const char* fmt, va_list args);
 
@@ -25,9 +25,9 @@ public:
 
   status_t append(const String8&);
   status_t appendFormat(const char* fmt, ...)
-  #if defined(__GNUC__)
-    __attribute__((format (printf, 2, 3)))
-  #endif
+#if defined(__GNUC__)
+  __attribute__((format(printf, 2, 3)))
+#endif
   ;
   status_t appendFormatV(const char* fmt, va_list);
 

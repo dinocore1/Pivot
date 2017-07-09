@@ -21,12 +21,12 @@ private:
 
 template<typename T>
 up<T>::up()
- : mPtr(0) {}
+  : mPtr(0) {}
 
 
 template<typename T>
 up<T>::up(ptr_t p)
- : mPtr(p) {}
+  : mPtr(p) {}
 
 template<typename T>
 up<T>::~up() {

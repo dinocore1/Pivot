@@ -87,11 +87,17 @@ public:
   const TYPE& itemAt(size_t index) const;
 
   //! returns number of items in the vector
-  inline size_t size() const { return ArrayListImpl::size(); }
+  inline size_t size() const {
+    return ArrayListImpl::size();
+  }
   //! returns whether or not the vector is empty
-  inline bool isEmpty() const { return ArrayListImpl::isEmpty(); }
+  inline bool isEmpty() const {
+    return ArrayListImpl::isEmpty();
+  }
   //! returns how many items can be stored without reallocating the backing store
-  inline size_t capacity() const { return ArrayListImpl::capacity(); }
+  inline size_t capacity() const {
+    return ArrayListImpl::capacity();
+  }
 
   //! read-only C-style access
   inline const TYPE* array() const;
@@ -104,7 +110,9 @@ public:
   //! remove several items
   inline int removeItemsAt(size_t index, size_t count = 1);
   //! remove one item
-  inline int removeAt(size_t index) { return removeItemsAt(index); }
+  inline int removeAt(size_t index) {
+    return removeItemsAt(index);
+  }
 
   /*
   //! insert one or several items initialized with their default constructor
@@ -128,27 +136,29 @@ public:
   */
 
 protected:
-    virtual void    do_construct(void* storage, size_t num) const;
-    virtual void    do_destroy(void* storage, size_t num) const;
-    virtual void    do_copy(void* dest, const void* from, size_t num) const;
-    virtual void    do_splat(void* dest, const void* item, size_t num) const;
-    virtual void    do_move_forward(void* dest, const void* from, size_t num) const;
-    virtual void    do_move_backward(void* dest, const void* from, size_t num) const;
+  virtual void    do_construct(void* storage, size_t num) const;
+  virtual void    do_destroy(void* storage, size_t num) const;
+  virtual void    do_copy(void* dest, const void* from, size_t num) const;
+  virtual void    do_splat(void* dest, const void* item, size_t num) const;
+  virtual void    do_move_forward(void* dest, const void* from, size_t num) const;
+  virtual void    do_move_backward(void* dest, const void* from, size_t num) const;
 };
 
 // ArrayList<T> can be trivially moved using memcpy() because moving does not
 // require any change to the underlying SharedBuffer contents or reference count.
-template<typename T> struct trait_trivial_move<ArrayList<T> > { enum { value = true }; };
+template<typename T> struct trait_trivial_move<ArrayList<T> > {
+  enum { value = true };
+};
 
 
 template<typename TYPE> inline
 ArrayList<TYPE>::ArrayList()
- : ArrayListImpl(sizeof(TYPE),
-  ( (traits<TYPE>::has_trivial_ctor ? HAS_TRIVIAL_CTOR : 0)
-  | (traits<TYPE>::has_trivial_dtor ? HAS_TRIVIAL_DTOR : 0)
-  | (traits<TYPE>::has_trivial_copy ? HAS_TRIVIAL_COPY : 0)
-  )
-){}
+  : ArrayListImpl(sizeof(TYPE),
+                  ((traits<TYPE>::has_trivial_ctor ? HAS_TRIVIAL_CTOR : 0)
+                   | (traits<TYPE>::has_trivial_dtor ? HAS_TRIVIAL_DTOR : 0)
+                   | (traits<TYPE>::has_trivial_copy ? HAS_TRIVIAL_COPY : 0)
+                  )
+                 ) {}
 
 template<typename TYPE> inline
 ArrayList<TYPE>::~ArrayList() {
@@ -160,7 +170,7 @@ const TYPE& ArrayList<TYPE>::operator[](size_t index) const {
 // LOG_FATAL_IF(index>=size(),
 //            "%s: index=%u out of range (%u)", __PRETTY_FUNCTION__,
 //            int(index), int(size()));
-    return *(array() + index);
+  return *(array() + index);
 }
 
 template<class TYPE> inline
@@ -170,52 +180,52 @@ const TYPE& ArrayList<TYPE>::itemAt(size_t index) const {
 
 template<class TYPE> inline
 int ArrayList<TYPE>::add(const TYPE& item) {
-    return ArrayListImpl::add(&item);
+  return ArrayListImpl::add(&item);
 }
 
 template<class TYPE> inline
 int ArrayList<TYPE>::removeItemsAt(size_t index, size_t count) {
-    return ArrayListImpl::removeItemsAt(index, count);
+  return ArrayListImpl::removeItemsAt(index, count);
 }
 
 template<class TYPE> inline
 const TYPE* ArrayList<TYPE>::array() const {
-    return static_cast<const TYPE *>(arrayImpl());
+  return static_cast<const TYPE*>(arrayImpl());
 }
 
 template<class TYPE> inline
 TYPE* ArrayList<TYPE>::editArray() {
-    return static_cast<TYPE *>(editArrayImpl());
+  return static_cast<TYPE*>(editArrayImpl());
 }
 
 template<class TYPE>
 void ArrayList<TYPE>::do_construct(void* storage, size_t num) const {
-    construct_type( reinterpret_cast<TYPE*>(storage), num );
+  construct_type(reinterpret_cast<TYPE*>(storage), num);
 }
 
 template<class TYPE>
 void ArrayList<TYPE>::do_destroy(void* storage, size_t num) const {
-    destroy_type( reinterpret_cast<TYPE*>(storage), num );
+  destroy_type(reinterpret_cast<TYPE*>(storage), num);
 }
 
 template<class TYPE>
 void ArrayList<TYPE>::do_copy(void* dest, const void* from, size_t num) const {
-    copy_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num );
+  copy_type(reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num);
 }
 
 template<class TYPE>
 void ArrayList<TYPE>::do_splat(void* dest, const void* item, size_t num) const {
-    splat_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(item), num );
+  splat_type(reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(item), num);
 }
 
 template<class TYPE>
 void ArrayList<TYPE>::do_move_forward(void* dest, const void* from, size_t num) const {
-    move_forward_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num );
+  move_forward_type(reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num);
 }
 
 template<class TYPE>
 void ArrayList<TYPE>::do_move_backward(void* dest, const void* from, size_t num) const {
-    move_backward_type( reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num );
+  move_backward_type(reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num);
 }
 
 } // namespace pivot

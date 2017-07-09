@@ -16,11 +16,11 @@ SharedBuffer* SharedBuffer::alloc(size_t size) {
 }
 
 int SharedBuffer::dealloc(const SharedBuffer* released) {
-  if (released->mRefs != 0) {
+  if(released->mRefs != 0) {
     return -1;
   }
-    free(const_cast<SharedBuffer*>(released));
-    return 0;
+  free(const_cast<SharedBuffer*>(released));
+  return 0;
 }
 
 void SharedBuffer::retain() const {
@@ -73,8 +73,8 @@ SharedBuffer* SharedBuffer::editResize(size_t newSize) const {
 }
 
 SharedBuffer* SharedBuffer::attemptEdit() const {
-  if (isOnlyOwner()) {
-      return const_cast<SharedBuffer*>(this);
+  if(isOnlyOwner()) {
+    return const_cast<SharedBuffer*>(this);
   }
   return 0;
 }

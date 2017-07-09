@@ -69,7 +69,7 @@ String8::String8(const char* o)
 }
 
 String8::String8(const char* o, size_t numChars)
- : mString(allocFromUTF8(o, numChars)){
+  : mString(allocFromUTF8(o, numChars)) {
 
   if(mString == NULL) {
     mString = getEmptyString();
@@ -98,14 +98,14 @@ String8 String8::formatV(const char* fmt, va_list args) {
 
 status_t String8::append(const String8& other) {
   const size_t otherLen = other.bytes();
-    if (bytes() == 0) {
-        setTo(other);
-        return NO_ERROR;
-    } else if (otherLen == 0) {
-        return NO_ERROR;
-    }
+  if(bytes() == 0) {
+    setTo(other);
+    return NO_ERROR;
+  } else if(otherLen == 0) {
+    return NO_ERROR;
+  }
 
-    return real_append(other.string(), otherLen);
+  return real_append(other.string(), otherLen);
 }
 
 status_t String8::appendFormat(const char* fmt, ...) {
@@ -119,18 +119,18 @@ status_t String8::appendFormat(const char* fmt, ...) {
 }
 
 status_t String8::appendFormatV(const char* fmt, va_list args) {
-    int result = NO_ERROR;
-    int n = vsnprintf(NULL, 0, fmt, args);
-    if (n != 0) {
-        size_t oldLength = length();
-        char* buf = lockBuffer(oldLength + n);
-        if (buf) {
-            vsnprintf(buf + oldLength, n + 1, fmt, args);
-        } else {
-            result = NO_MEMORY;
-        }
+  int result = NO_ERROR;
+  int n = vsnprintf(NULL, 0, fmt, args);
+  if(n != 0) {
+    size_t oldLength = length();
+    char* buf = lockBuffer(oldLength + n);
+    if(buf) {
+      vsnprintf(buf + oldLength, n + 1, fmt, args);
+    } else {
+      result = NO_MEMORY;
     }
-    return result;
+  }
+  return result;
 }
 
 status_t String8::real_append(const char* other, size_t otherLen) {
@@ -149,32 +149,32 @@ status_t String8::real_append(const char* other, size_t otherLen) {
 }
 
 char* String8::lockBuffer(size_t size) {
-    SharedBuffer* buf = SharedBuffer::bufferFromData(mString)->editResize(size+1);
-    if (buf) {
-        char* str = (char*)buf->data();
-        mString = str;
-        return str;
-    }
-    return NULL;
+  SharedBuffer* buf = SharedBuffer::bufferFromData(mString)->editResize(size+1);
+  if(buf) {
+    char* str = (char*)buf->data();
+    mString = str;
+    return str;
+  }
+  return NULL;
 }
 
 void String8::unlockBuffer() {
-    unlockBuffer(strlen(mString));
+  unlockBuffer(strlen(mString));
 }
 
 status_t String8::unlockBuffer(size_t size) {
-    if (size != this->length()) {
-        SharedBuffer* buf = SharedBuffer::bufferFromData(mString)->editResize(size+1);
-        if (! buf) {
-            return NO_MEMORY;
-        }
-
-        char* str = (char*)buf->data();
-        str[size] = 0;
-        mString = str;
+  if(size != this->length()) {
+    SharedBuffer* buf = SharedBuffer::bufferFromData(mString)->editResize(size+1);
+    if(! buf) {
+      return NO_MEMORY;
     }
 
-    return NO_ERROR;
+    char* str = (char*)buf->data();
+    str[size] = 0;
+    mString = str;
+  }
+
+  return NO_ERROR;
 }
 
 void String8::clear() {
