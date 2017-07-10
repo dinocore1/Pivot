@@ -24,6 +24,8 @@ public:
   inline size_t bytes() const;
 
   status_t append(const String8&);
+  status_t append(const char*);
+  status_t append(const char*, size_t numChars);
   status_t appendFormat(const char* fmt, ...)
 #if defined(__GNUC__)
   __attribute__((format(printf, 2, 3)))
@@ -48,6 +50,8 @@ public:
 
   void clear();
   void setTo(const String8&);
+  status_t setTo(const char*);
+  status_t setTo(const char*, size_t len);
 
   inline const char* string() const;
   inline operator const char* () const;

@@ -108,6 +108,20 @@ status_t String8::append(const String8& other) {
   return real_append(other.string(), otherLen);
 }
 
+status_t String8::append(const char* str) {
+  return append(str, strlen(str));
+}
+
+status_t String8::append(const char* str, size_t len) {
+  if(bytes() == 0) {
+    return setTo(str, len);
+  } else if(len == 0) {
+    return NO_ERROR;
+  }
+
+  return real_append(str, len);
+}
+
 status_t String8::appendFormat(const char* fmt, ...) {
   va_list args;
   va_start(args, fmt);
@@ -186,6 +200,22 @@ void String8::setTo(const String8& o) {
   SharedBuffer::bufferFromData(o.mString)->retain();
   SharedBuffer::bufferFromData(mString)->release();
   mString = o.mString;
+}
+
+status_t String8::setTo(const char* other) {
+  return setTo(other, strlen(other));
+}
+
+status_t String8::setTo(const char* other, size_t len) {
+  const char* newString = allocFromUTF8(other, len);
+  SharedBuffer::bufferFromData(mString)->release();
+  mString = newString;
+  if(mString) {
+    return NO_ERROR;
+  }
+
+  mString = getEmptyString();
+  return NO_MEMORY;
 }
 
 int String8::compare(const String8& other) const {

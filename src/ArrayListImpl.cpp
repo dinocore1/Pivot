@@ -7,9 +7,9 @@ namespace pivot {
 const size_t kMinArrayCapacity = 4;
 
 #if defined(WIN32)
-  //windows defines min/max as a macro
-  #undef min
-  #undef max
+//windows defines min/max as a macro
+#undef min
+#undef max
 #endif
 
 static inline size_t min(size_t a, size_t b) {
