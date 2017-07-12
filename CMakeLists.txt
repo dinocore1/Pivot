@@ -22,8 +22,6 @@ add_library(pivot
   include/pivot/String8.h
   include/pivot/TypeHelpers.h
   include/pivot/Types.h
-  include/pivot/Vector.h
-  include/pivot/VectorImpl.h
   include/pivot/View.h
   src/ArrayListImpl.cpp
   src/SharedBuffer.cpp

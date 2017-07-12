@@ -26,6 +26,10 @@ public:
   void* editArrayImpl();
 
   int insertAt(const void* item, size_t index, size_t numItems = 1);
+  int insertArrayAt(const void* array, size_t index, size_t len);
+  int appendArray(const void* array, size_t length);
+  int insertArrayListAt(const ArrayListImpl&, size_t index);
+  int appendArrayList(const ArrayListImpl&);
   int add(const void* item);
   const void* itemLocation(size_t index) const;
 
@@ -107,6 +111,13 @@ public:
   //! same as push() but returns the index the item was added at (or an error)
   int add(const TYPE& item);
 
+  inline int insertAt(const TYPE& item, size_t index, size_t numItems = 1);
+  int insertArrayAt(const TYPE* array, size_t index, size_t len);
+  int appendArray(const TYPE* array, size_t length);
+  int insertArrayListAt(const ArrayList<TYPE>&, size_t index);
+  int appendArrayList(const ArrayList<TYPE>&);
+
+
   //! remove several items
   inline int removeItemsAt(size_t index, size_t count = 1);
   //! remove one item
@@ -134,6 +145,23 @@ public:
 
 
   */
+
+  typedef TYPE* iterator;
+  typedef TYPE const* const_iterator;
+
+  inline iterator begin() {
+    return editArray();
+  }
+  inline iterator end() {
+    return editArray() + size();
+  }
+
+  inline const_iterator begin() const {
+    return array();
+  }
+  inline const_iterator end() const {
+    return array() + size();
+  }
 
 protected:
   virtual void    do_construct(void* storage, size_t num) const;
@@ -181,6 +209,31 @@ const TYPE& ArrayList<TYPE>::itemAt(size_t index) const {
 template<class TYPE> inline
 int ArrayList<TYPE>::add(const TYPE& item) {
   return ArrayListImpl::add(&item);
+}
+
+template<class TYPE> inline
+int ArrayList<TYPE>::insertAt(const TYPE& item, size_t index, size_t numItems) {
+  return ArrayListImpl::insertAt(&item, index, numItems);
+}
+
+template<class TYPE> inline
+int ArrayList<TYPE>::insertArrayAt(const TYPE* array, size_t index, size_t len) {
+  return ArrayListImpl::insertArrayAt(array, index, len);
+}
+
+template<class TYPE> inline
+int ArrayList<TYPE>::appendArray(const TYPE* array, size_t length) {
+  return ArrayListImpl::appendArray(array, length);
+}
+
+template<class TYPE> inline
+int ArrayList<TYPE>::insertArrayListAt(const ArrayList<TYPE>& o, size_t index) {
+  return ArrayListImpl::insertArrayListAt(reinterpret_cast<const ArrayListImpl&>(o), index);
+}
+
+template<class TYPE> inline
+int ArrayList<TYPE>::appendArrayList(const ArrayList<TYPE>& o) {
+  return ArrayListImpl::appendArrayList(reinterpret_cast<const ArrayListImpl&>(o));
 }
 
 template<class TYPE> inline

@@ -68,6 +68,29 @@ int ArrayListImpl::insertAt(const void* item, size_t index, size_t numItems) {
   return where ? index : (int)NO_MEMORY;
 }
 
+int ArrayListImpl::insertArrayAt(const void* array, size_t index, size_t len) {
+  if(index > size()) {
+    return BAD_INDEX;
+  }
+  void* where = _grow(index, len);
+  if(where) {
+    _do_copy(where, array, len);
+  }
+  return where ? index : (int) NO_MEMORY;
+}
+
+int ArrayListImpl::appendArray(const void* array, size_t len) {
+  return insertArrayAt(array, size(), len);
+}
+
+int ArrayListImpl::insertArrayListAt(const ArrayListImpl& o, size_t index) {
+  return insertArrayAt(o.arrayImpl(), index, o.size());
+}
+
+int ArrayListImpl::appendArrayList(const ArrayListImpl& o) {
+  return insertArrayListAt(o, size());
+}
+
 int ArrayListImpl::add(const void* item) {
   return insertAt(item, size());
 }
