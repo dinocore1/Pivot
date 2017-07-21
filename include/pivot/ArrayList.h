@@ -15,6 +15,8 @@ public:
   virtual ~ArrayListImpl();
   void finish_vector();
 
+  ArrayListImpl& operator= (const ArrayListImpl&);
+
   inline size_t size() const;
   inline bool isEmpty() const;
   size_t capacity() const;
@@ -87,6 +89,10 @@ public:
   ArrayList(const ArrayList<TYPE>&);
   virtual ~ArrayList();
 
+  // copy constructors
+  const ArrayList<TYPE>& operator= (const ArrayList<TYPE>& rhs) const;
+  ArrayList<TYPE>& operator= (const ArrayList<TYPE>& rhs);
+
   const TYPE& operator[](size_t index) const;
   const TYPE& itemAt(size_t index) const;
 
@@ -124,27 +130,6 @@ public:
   inline int removeAt(size_t index) {
     return removeItemsAt(index);
   }
-
-  /*
-  //! insert one or several items initialized with their default constructor
-  inline  ssize_t insertAt(size_t index, size_t numItems = 1);
-  //! insert one or several items initialized from a prototype item
-  ssize_t insertAt(const TYPE& prototype_item, size_t index, size_t numItems = 1);
-  //! pop the top of the stack (removes the last element). No-op if the stack's empty
-  inline  void pop();
-  //! pushes an item initialized with its default constructor
-  inline  void push();
-  //! pushes an item on the top of the stack
-  void push(const TYPE& item);
-  //! same as push() but returns the index the item was added at (or an error)
-  inline ssize_t add();
-  //! replace an item with a new one initialized with its default constructor
-  inline ssize_t replaceAt(size_t index);
-  //! replace an item with a new one
-  ssize_t replaceAt(const TYPE& item, size_t index);
-
-
-  */
 
   typedef TYPE* iterator;
   typedef TYPE const* const_iterator;
@@ -191,6 +176,18 @@ ArrayList<TYPE>::ArrayList()
 template<typename TYPE> inline
 ArrayList<TYPE>::~ArrayList() {
   finish_vector();
+}
+
+template<class TYPE> inline
+ArrayList<TYPE>& ArrayList<TYPE>::operator= (const ArrayList<TYPE>& rhs) {
+  ArrayListImpl::operator=(rhs);
+  return *this;
+}
+
+template<class TYPE> inline
+const ArrayList<TYPE>& ArrayList<TYPE>::operator= (const ArrayList<TYPE>& rhs) const {
+  ArrayListImpl::operator=(static_cast<const ArrayList&>(rhs));
+  return *this;
 }
 
 template<class TYPE> inline

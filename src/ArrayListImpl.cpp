@@ -31,6 +31,22 @@ ArrayListImpl::~ArrayListImpl() {
   // We can't call _do_destroy() here because the vtable is already gone.
 }
 
+ArrayListImpl& ArrayListImpl::operator= (const ArrayListImpl& rhs) {
+  if(this != &rhs) {
+    release_storage();
+    if(rhs.mCount) {
+      mStorage = rhs.mStorage;
+      mCount = rhs.mCount;
+      SharedBuffer::bufferFromData(mStorage)->retain();
+    } else {
+      mStorage = 0;
+      mCount = 0;
+    }
+  }
+
+  return *this;
+}
+
 int ArrayListImpl::removeItemsAt(size_t index, size_t count) {
 //    ALOG_ASSERT((index+count)<=size(),
 //        "[%p] remove: index=%d, count=%d, size=%d",
