@@ -14,10 +14,13 @@ public:
   ~up();
   T* release();
   void reset(T* p = 0);
+  bool operator()() const;
 
 private:
   ptr_t mPtr;
 };
+
+//////////////////// Unique Pointer ///////////////////
 
 template<typename T>
 up<T>::up()
@@ -49,7 +52,10 @@ void up<T>::reset(T* ptr) {
   mPtr = ptr;
 }
 
-
+template<typename T>
+bool up<T>::operator()() const {
+  return mPtr != 0;
+}
 
 
 } // namespace pivot
