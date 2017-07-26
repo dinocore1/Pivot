@@ -14,6 +14,8 @@ public:
   ~up();
   T* release();
   void reset(T* p = 0);
+  T* operator-> ();
+  const T* operator-> () const;
   bool operator()() const;
 
 private:
@@ -50,6 +52,16 @@ void up<T>::reset(T* ptr) {
     mPtr = 0;
   }
   mPtr = ptr;
+}
+
+template<typename T>
+T* up<T>::operator-> () {
+  return mPtr;
+}
+
+template<typename T>
+const T* up<T>::operator-> () const {
+  return mPtr;
 }
 
 template<typename T>
