@@ -133,8 +133,13 @@ status_t String8::appendFormat(const char* fmt, ...) {
 }
 
 status_t String8::appendFormatV(const char* fmt, va_list args) {
+  va_list copy;
   int result = NO_ERROR;
-  int n = vsnprintf(NULL, 0, fmt, args);
+  /* make a copy of the input args*/
+  va_copy(copy, args);
+  int n = vsnprintf(NULL, 0, fmt, copy);
+  va_end(copy);
+
   if(n != 0) {
     size_t oldLength = length();
     char* buf = lockBuffer(oldLength + n);
