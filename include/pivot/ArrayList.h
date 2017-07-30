@@ -174,6 +174,10 @@ ArrayList<TYPE>::ArrayList()
                  ) {}
 
 template<typename TYPE> inline
+ArrayList<TYPE>::ArrayList(const ArrayList<TYPE>& rhs)
+ : ArrayListImpl(rhs) {}
+
+template<typename TYPE> inline
 ArrayList<TYPE>::~ArrayList() {
   finish_vector();
 }
