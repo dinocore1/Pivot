@@ -23,6 +23,15 @@ static inline size_t max(size_t a, size_t b) {
 ArrayListImpl::ArrayListImpl(size_t itemSize, uint32_t flags)
   : mStorage(0), mCount(0), mFlags(flags), mItemSize(itemSize) {}
 
+ArrayListImpl::ArrayListImpl(const ArrayListImpl& rhs)
+ : mStorage(rhs.mStorage), mCount(rhs.mCount),
+ mFlags(rhs.mFlags), mItemSize(rhs.mItemSize)
+{
+ if(mStorage) {
+   SharedBuffer::bufferFromData(mStorage)->retain();
+ }
+}
+
 ArrayListImpl::~ArrayListImpl() {
 //  ALOGW_IF(mCount,
 //      "[%p] subclasses of VectorImpl must call finish_vector()"

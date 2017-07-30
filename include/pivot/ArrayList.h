@@ -12,6 +12,7 @@ public:
   };
 
   ArrayListImpl(size_t itemSize, uint32_t flags);
+  ArrayListImpl(const ArrayListImpl& rhs);
   virtual ~ArrayListImpl();
   void finish_vector();
 
