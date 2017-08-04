@@ -9,6 +9,11 @@ String8 createString() {
 }
 
 int main() {
+
+  String8 fmt;
+  fmt.appendFormat("%g %g", 4.0, 2.0);
+  printf("%s\n", (const char*)fmt);
+
   String8 str2;
   str2 = createString();
   printf("done %s\n", (const char*)str2);

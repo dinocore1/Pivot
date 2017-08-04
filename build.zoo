@@ -1,3 +1,5 @@
 lib pivot 0.1.0 {
-  
+  cmake {
+    CMAKE_BUILD_TYPE "Debug"
+  }
 }
