@@ -38,9 +38,9 @@ target_include_directories(pivot
 
 install(TARGETS pivot
   EXPORT pivotConfig
-  RUNTIME DESTINATION bin
+  ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib/static
+  RUNTIME DESTINATION bin # this is for Windows
 )
 
 install(DIRECTORY include/
