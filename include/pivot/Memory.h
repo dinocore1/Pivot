@@ -33,6 +33,8 @@ public:
 
   RefCountObj(void* data, uint32_t flags);
 
+  void retainStrong();
+
   const void* mData;
   const uint32_t mFlags;
   mutable pivot_atomic_int_t_dec pivot_atomic_int_t mStrongRefs;
@@ -60,8 +62,7 @@ public:
   sp<T>& operator= (const sp<T>&);
 
 private:
-  inline RefCountObj* getRefObj();
-  void retain();
+  inline RefCountObj* getRefObj() const;
   void release();
   void* mPtr;
 };
@@ -98,15 +99,16 @@ template<typename TYPE>
 sp<TYPE>::sp(const sp<TYPE>& copy)
   : mPtr(copy.mPtr)
 {
-  pivot_atomic_inc(getRefObj()->mStrongRefs);
-  pivot_atomic_inc(getRefObj()->mWeakRefs);
+  retain();
 }
 
 template<typename TYPE>
 sp<TYPE>::sp(const wp<TYPE>& copy)
   : mPtr(copy.mPtr)
 {
-  retain();
+  if (copy()) {
+    retain();
+  }
 }
 
 template<typename T>
@@ -138,12 +140,13 @@ bool sp<T>::operator()() const {
 
 template<typename T>
 T* sp<T>::operator-> () {
-  return static_cast<T>(getRefObj().mData);
+  return static_cast<T>(getRefObj()->mData);
 }
 
 template<typename T>
 const T* sp<T>::operator-> () const {
-  return static_cast<T>(getRefObj().mData);
+  T* retval = static_cast<T>(getRefObj()->mData);
+  return const_cast<const T*>(retval);
 }
 
 template<typename TYPE>
@@ -155,7 +158,7 @@ sp<TYPE>& sp<TYPE>::operator= (const sp<TYPE>& rhs) {
 
 template<typename T>
 inline
-RefCountObj* sp<T>::getRefObj() {
+RefCountObj* sp<T>::getRefObj() const {
   return static_cast<RefCountObj>(mPtr);
 }
 

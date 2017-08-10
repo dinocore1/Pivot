@@ -8,5 +8,10 @@ RefCountObj::RefCountObj(void* data, uint32_t flags)
 {
 }
 
+void RefCountObj::retainStrong() {
+  pivot_atomic_inc(&mStrongRefs);
+  pivot_atomic_inc(&mWeakRefs);
+}
+
 
 } // namespace pivot
