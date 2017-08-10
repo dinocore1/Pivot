@@ -41,6 +41,9 @@ public:
 };
 
 template<typename T>
+class wp;
+
+template<typename T>
 class sp {
 public:
   typedef T* ptr_t;
@@ -48,14 +51,28 @@ public:
   explicit sp();
   sp(ptr_t);
   sp(const sp&);
+  sp(const wp<T>&);
   ~sp();
 
   bool operator()() const;
   T* operator-> ();
   const T* operator-> () const;
+  sp<T>& operator= (const sp<T>&);
 
 private:
-  inline RefCountObj& getRefObj();
+  inline RefCountObj* getRefObj();
+  void retain();
+  void release();
+  void* mPtr;
+};
+
+template<typename TYPE>
+class wp {
+public:
+  wp(const sp<TYPE>&);
+
+  bool operator()() const;
+private:
   void* mPtr;
 };
 
@@ -81,17 +98,36 @@ template<typename TYPE>
 sp<TYPE>::sp(const sp<TYPE>& copy)
   : mPtr(copy.mPtr)
 {
-  pivot_atomic_inc(&getRefObj().mStrongRefs)
+  pivot_atomic_inc(getRefObj()->mStrongRefs);
+  pivot_atomic_inc(getRefObj()->mWeakRefs);
+}
+
+template<typename TYPE>
+sp<TYPE>::sp(const wp<TYPE>& copy)
+  : mPtr(copy.mPtr)
+{
+  retain();
 }
 
 template<typename T>
 sp<T>::~sp() {
+  release();
+}
+
+template<typename TYPE>
+void sp<TYPE>::release() {
   if (mPtr) {
     RefCountObj ref = getRefObj();
     pivot_atomic_int_t newval;
     if ((newval = pivot_atomic_dec(&ref.mStrongRefs)) == 0) {
       delete ref.mData;
+      ref.mData = 0;
     }
+
+    if ((newval = pivot_atomic_dec(&ref.mWeakRefs)) == 0) {
+      delete ref;
+    }
+    mPtr = 0;
   }
 }
 
@@ -110,11 +146,17 @@ const T* sp<T>::operator-> () const {
   return static_cast<T>(getRefObj().mData);
 }
 
+template<typename TYPE>
+sp<TYPE>& sp<TYPE>::operator= (const sp<TYPE>& rhs) {
+  rhs.retain();
+  release();
+  mPtr = rhs.mPtr;
+}
 
 template<typename T>
 inline
-RefCountObj& sp<T>::getRefObj() {
-  return *static_cast<RefCountObj>(mPtr);
+RefCountObj* sp<T>::getRefObj() {
+  return static_cast<RefCountObj>(mPtr);
 }
 
 //////////////////// Unique Pointer ///////////////////

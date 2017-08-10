@@ -4,7 +4,7 @@ namespace pivot {
 
 
 RefCountObj::RefCountObj(void* data, uint32_t flags)
-  : mData(data), mFlags(flags), mStrongRefs(1), mWeakRefs(0)
+  : mData(data), mFlags(flags), mStrongRefs(1), mWeakRefs(1)
 {
 }
 
