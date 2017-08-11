@@ -35,7 +35,7 @@ public:
 
   void retainStrong();
 
-  const void* mData;
+  void* mData;
   const uint32_t mFlags;
   mutable pivot_atomic_int_t_dec pivot_atomic_int_t mStrongRefs;
   mutable pivot_atomic_int_t_dec pivot_atomic_int_t mWeakRefs;
@@ -56,13 +56,14 @@ public:
   sp(const wp<T>&);
   ~sp();
 
-  bool operator()() const;
-  T* operator-> ();
-  const T* operator-> () const;
+  inline bool isValid() const;
+  inline T* operator-> ();
+  inline const T* operator-> () const;
   sp<T>& operator= (const sp<T>&);
 
 private:
   inline RefCountObj* getRefObj() const;
+  void retain();
   void release();
   void* mPtr;
 };
@@ -72,10 +73,29 @@ class wp {
 public:
   wp(const sp<TYPE>&);
 
+  inline bool isValid() const;
   bool operator()() const;
 private:
+  inline RefCountObj* getRefObj() const;
   void* mPtr;
 };
+
+
+//////////////////// Weak Pointer    //////////////////
+
+
+template<typename TYPE>
+inline
+bool wp<TYPE>::isValid() const {
+  return getRefObj().mStrongRefs > 0;
+}
+
+template<typename TYPE>
+inline
+RefCountObj* wp<TYPE>::getRefObj() const {
+  return static_cast<RefCountObj>(mPtr);
+}
+
 
 //////////////////// Strong Pointer ///////////////////
 
@@ -87,12 +107,12 @@ sp<T>::sp()
 template<typename TYPE>
 sp<TYPE>::sp(ptr_t ptr)
 {
-  mPtr = new RefCountObj(ptr, 
+  mPtr = new RefCountObj(ptr,
     ((traits<TYPE>::has_trivial_ctor ? RefCountObj::HAS_TRIVIAL_CTOR : 0)
       | (traits<TYPE>::has_trivial_dtor ? RefCountObj::HAS_TRIVIAL_DTOR : 0)
       | (traits<TYPE>::has_trivial_copy ? RefCountObj::HAS_TRIVIAL_COPY : 0)
       )
-    )
+  );
 }
 
 template<typename TYPE>
@@ -106,7 +126,7 @@ template<typename TYPE>
 sp<TYPE>::sp(const wp<TYPE>& copy)
   : mPtr(copy.mPtr)
 {
-  if (copy()) {
+  if (copy.isValid()) {
     retain();
   }
 }
@@ -117,24 +137,34 @@ sp<T>::~sp() {
 }
 
 template<typename TYPE>
+void sp<TYPE>::retain() {
+  if (mPtr) {
+    RefCountObj* ref = getRefObj();
+    pivot_atomic_inc(&ref->mStrongRefs);
+    pivot_atomic_inc(&ref->mWeakRefs);
+  }
+}
+
+template<typename TYPE>
 void sp<TYPE>::release() {
   if (mPtr) {
-    RefCountObj ref = getRefObj();
+    RefCountObj* ref = getRefObj();
     pivot_atomic_int_t newval;
-    if ((newval = pivot_atomic_dec(&ref.mStrongRefs)) == 0) {
-      delete ref.mData;
-      ref.mData = 0;
+    if ((newval = pivot_atomic_dec(&ref->mStrongRefs)) == 0) {
+      delete static_cast<TYPE*>(ref->mData);
+      ref->mData = 0;
     }
 
-    if ((newval = pivot_atomic_dec(&ref.mWeakRefs)) == 0) {
+    if ((newval = pivot_atomic_dec(&ref->mWeakRefs)) == 0) {
       delete ref;
     }
     mPtr = 0;
   }
 }
 
-template<typename T>
-bool sp<T>::operator()() const {
+
+template<typename TYPE>
+bool sp<TYPE>::isValid() const {
   return getRefObj().mStrongRefs > 0;
 }
 
@@ -159,7 +189,7 @@ sp<TYPE>& sp<TYPE>::operator= (const sp<TYPE>& rhs) {
 template<typename T>
 inline
 RefCountObj* sp<T>::getRefObj() const {
-  return static_cast<RefCountObj>(mPtr);
+  return static_cast<RefCountObj*>(mPtr);
 }
 
 //////////////////// Unique Pointer ///////////////////

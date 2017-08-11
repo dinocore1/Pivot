@@ -1,5 +1,18 @@
+lib gtest 1.8.0 {
+  git {
+    url "https://github.com/dinocore1/googletest.git"
+    rev "origin/zookeeper"
+  }
+  cmake {
+    gtest_force_shared_crt "ON"
+  }
+}
+
 lib pivot 0.1.0 {
   cmake {
     CMAKE_BUILD_TYPE "Debug"
+  }
+  dependencies {
+    test gtest 1.8.0
   }
 }

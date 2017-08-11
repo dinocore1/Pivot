@@ -52,7 +52,7 @@ install(EXPORT pivotConfig
   DESTINATION cmake
 )
 if(BUILD_TESTS)
-  add_executable(stringtest tests/stringtest.cpp)
-  target_link_libraries(stringtest pivot)
-  add_test(stringtest stringtest)
+  enable_testing()
+  find_package(gtest REQUIRED)
+  add_subdirectory(tests)
 endif()
