@@ -63,7 +63,7 @@ public:
 
 private:
   inline RefCountObj* getRefObj() const;
-  void retain();
+  void retain() const;
   void release();
   void* mPtr;
 };
@@ -137,11 +137,10 @@ sp<T>::~sp() {
 }
 
 template<typename TYPE>
-void sp<TYPE>::retain() {
+void sp<TYPE>::retain() const {
   if (mPtr) {
     RefCountObj* ref = getRefObj();
-    pivot_atomic_inc(&ref->mStrongRefs);
-    pivot_atomic_inc(&ref->mWeakRefs);
+    ref->retainStrong();
   }
 }
 
@@ -184,6 +183,7 @@ sp<TYPE>& sp<TYPE>::operator= (const sp<TYPE>& rhs) {
   rhs.retain();
   release();
   mPtr = rhs.mPtr;
+  return *this;
 }
 
 template<typename T>
