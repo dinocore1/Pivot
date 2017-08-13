@@ -39,7 +39,7 @@ public:
   const uint32_t mFlags;
   mutable pivot_atomic_int_t_dec pivot_atomic_int_t mStrongRefs;
   mutable pivot_atomic_int_t_dec pivot_atomic_int_t mWeakRefs;
-  
+
 };
 
 template<typename T>
@@ -169,12 +169,12 @@ bool sp<TYPE>::isValid() const {
 
 template<typename T>
 T* sp<T>::operator-> () {
-  return static_cast<T>(getRefObj()->mData);
+  return static_cast<T*>(getRefObj()->mData);
 }
 
 template<typename T>
 const T* sp<T>::operator-> () const {
-  T* retval = static_cast<T>(getRefObj()->mData);
+  T* retval = static_cast<T*>(getRefObj()->mData);
   return const_cast<const T*>(retval);
 }
 
