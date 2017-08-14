@@ -5,15 +5,15 @@
 
 using namespace pivot;
 
+static int numDeleted = 0;
+struct MyObj {
+
+  ~MyObj() {
+    numDeleted++;
+  }
+};
+
 TEST(Memory, StrongPointer) {
-
-  static int numDeleted = 0;
-  struct MyObj {
-
-    ~MyObj() {
-      numDeleted++;
-    }
-  };
 
   {
     sp<MyObj> obj3;

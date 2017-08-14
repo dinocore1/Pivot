@@ -17,7 +17,7 @@ public:
   T* operator-> ();
   const T* operator-> () const;
   bool operator()() const;
-  up& operator=(const up&) = delete;
+  //up& operator=(const up&) = delete;
 
 private:
   ptr_t mPtr;
