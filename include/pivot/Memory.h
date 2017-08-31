@@ -93,7 +93,7 @@ bool wp<TYPE>::isValid() const {
 template<typename TYPE>
 inline
 RefCountObj* wp<TYPE>::getRefObj() const {
-  return static_cast<RefCountObj>(mPtr);
+  return static_cast<RefCountObj*>(mPtr);
 }
 
 

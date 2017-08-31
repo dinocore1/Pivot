@@ -132,6 +132,8 @@ public:
     return removeItemsAt(index);
   }
 
+  inline void clear();
+
   typedef TYPE* iterator;
   typedef TYPE const* const_iterator;
 
@@ -281,6 +283,11 @@ void ArrayList<TYPE>::do_move_forward(void* dest, const void* from, size_t num) 
 template<class TYPE>
 void ArrayList<TYPE>::do_move_backward(void* dest, const void* from, size_t num) const {
   move_backward_type(reinterpret_cast<TYPE*>(dest), reinterpret_cast<const TYPE*>(from), num);
+}
+
+template<class TYPE>
+void ArrayList<TYPE>::clear() {
+  ArrayListImpl::clear();
 }
 
 } // namespace pivot
