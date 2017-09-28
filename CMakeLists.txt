@@ -30,6 +30,10 @@ add_library(pivot
   src/String8.cpp
 )
 
+set_target_properties(pivot
+  PROPERTIES POSITION_INDEPENDENT_CODE ON
+)
+
 target_include_directories(pivot
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
