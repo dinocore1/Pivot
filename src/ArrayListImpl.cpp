@@ -156,6 +156,25 @@ size_t ArrayListImpl::capacity() const {
   return 0;
 }
 
+int ArrayListImpl::setCapacity(size_t new_capacity) {
+  size_t current_capacity = capacity();
+  int amount = new_capacity - size();
+  if (amount <= 0) {
+    // we can't reduce the capacity
+    return current_capacity;
+  }
+  SharedBuffer* sb = SharedBuffer::alloc(new_capacity * mItemSize);
+  if (sb) {
+    void* array = sb->data();
+    _do_copy(array, mStorage, size());
+    release_storage();
+    mStorage = const_cast<void*>(array);
+  } else {
+    return NO_MEMORY;
+  }
+  return new_capacity;
+}
+
 void ArrayListImpl::release_storage() {
   if(mStorage) {
     const SharedBuffer* sb = SharedBuffer::bufferFromData(mStorage);

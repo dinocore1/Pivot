@@ -21,6 +21,7 @@ public:
   inline size_t size() const;
   inline bool isEmpty() const;
   size_t capacity() const;
+  int setCapacity(size_t size);
   int removeItemsAt(size_t index, size_t count = 1);
   void clear();
   inline const size_t itemSize() const;
@@ -108,6 +109,10 @@ public:
   //! returns how many items can be stored without reallocating the backing store
   inline size_t capacity() const {
     return ArrayListImpl::capacity();
+  }
+
+  inline int setCapacity(size_t size) {
+    return ArrayListImpl::setCapacity(size);
   }
 
   //! read-only C-style access
