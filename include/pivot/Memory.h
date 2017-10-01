@@ -59,6 +59,8 @@ public:
   inline bool isValid() const;
   inline T* operator-> ();
   inline const T* operator-> () const;
+  inline T* operator& ();
+  inline const T* operator& () const;
   inline T& operator* ();
   inline const T& operator* () const;
   sp<T>& operator= (const sp<T>&);
@@ -178,6 +180,16 @@ template<typename T>
 const T* sp<T>::operator-> () const {
   T* retval = static_cast<T*>(getRefObj()->mData);
   return const_cast<const T*>(retval);
+}
+
+template<typename T>
+T* sp<T>::operator& () {
+  return static_cast<T*>(getRefObj()->mData);
+}
+
+template<typename T>
+const T* sp<T>::operator& () const {
+  return static_cast<T*>(getRefObj()->mData);
 }
 
 template<typename T>
