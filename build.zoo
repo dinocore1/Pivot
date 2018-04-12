@@ -8,7 +8,7 @@ lib gtest 1.8.0 {
   }
 }
 
-lib pivot 0.1.0 {
+lib pivot 0.1.1 {
   cmake {
     CMAKE_BUILD_TYPE "Debug"
   }

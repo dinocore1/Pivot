@@ -91,7 +91,8 @@ private:
 template<typename TYPE>
 inline
 bool wp<TYPE>::isValid() const {
-  return getRefObj().mStrongRefs > 0;
+  RefCountObj* ref = getRefObj();
+  return ref != 0 && ref->mData != 0;
 }
 
 template<typename TYPE>
@@ -168,7 +169,8 @@ void sp<TYPE>::release() {
 
 template<typename TYPE>
 bool sp<TYPE>::isValid() const {
-  return getRefObj().mStrongRefs > 0;
+  RefCountObj* ref = getRefObj();
+  return ref != 0 && ref->mData != 0;
 }
 
 template<typename T>
